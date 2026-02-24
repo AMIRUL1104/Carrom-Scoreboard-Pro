@@ -7,8 +7,8 @@ function AppLogo() {
         <img src={icon} alt="Carrom Pro Logo" className="w-6 h-6" />
       </div>
 
-      <span className="text-xl font-bold tracking-tight text-[#00e5a0]">
-        Carrom<span className="text-zinc-500 font-bold">Pro</span>
+      <span className="text-lg font-extrabold leading-6 font-[Syne] tracking-tight text-[#00e5a0]">
+        Carrom <span className="text-zinc-500 font-bold">Pro</span>
       </span>
     </div>
   );
