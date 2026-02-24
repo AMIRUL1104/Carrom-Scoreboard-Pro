@@ -23,13 +23,13 @@ const gameModes = [
 ];
 function Cards() {
   return (
-    <section className=" grid sm:grid-cols-3 grid-cols-1  gap-5 w-full sm:max-w-245 max-w-105 relative z-10 mx-auto mb-20">
+    <section className=" grid md:grid-cols-3 grid-cols-1   gap-5 md:px-4 lg:px-0 w-full   md:max-w-245 sm:max-w-150 max-w-80 relative z-10 mx-auto mb-20">
       {gameModes.map((mode, idx) => (
         <div
           key={idx}
-          className="relative flex flex-col p-[36px_28px_28px] bg-[#111722] border border-[#1e2836] 
+          className="relative flex flex-col max-md:items-center  p-[36px_28px_28px] bg-[#111722] border border-[#1e2836] 
                  rounded-[28px] shadow-[0_4px_24px_rgba(0,0,0,0.5),0_1px_0_rgba(255,255,255,0.04)_inset] 
-                 overflow-hidden cursor-pointer transition-all duration-200 ease-in-out hover:bg-[#161f2e] hover:border-[#2a3a50] hover:translate-y-[-4px] hover:shadow-[0_0_20px_rgba(0,229,160,0.35),0_4px_24px_rgba(0,0,0,0.5)]"
+                 overflow-hidden cursor-pointer transition-all duration-200 ease-in-out hover:bg-[#161f2e] hover:border-[#2a3a50] hover:translate-y-1 hover:shadow-[0_0_20px_rgba(0,229,160,0.35),0_4px_24px_rgba(0,0,0,0.5)]"
         >
           {/* Gradient top line */}
           <div
@@ -58,7 +58,7 @@ function Cards() {
           </h2>
 
           {/* Description */}
-          <p className="text-[#8a9bb0] text-[13.5px] leading-[1.6] font-light mb-[28px] flex-1">
+          <p className="text-[#8a9bb0] text-[13.5px] leading-[1.6] font-light mb-7 flex-1">
             {mode.description}
           </p>
 
@@ -66,7 +66,7 @@ function Cards() {
           <button
             className="inline-flex items-center justify-center gap-2.5
              font-[Syne] font-semibold text-[14px]
-             rounded-lg border-none cursor-pointer
+             rounded-2xl border-none cursor-pointer
              transition-all duration-200 ease-in-out
              px-5.5 py-3 w-full
              bg-[#00e5a0] text-[#060810]
