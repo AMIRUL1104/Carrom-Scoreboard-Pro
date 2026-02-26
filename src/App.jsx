@@ -1,6 +1,7 @@
 import "./App.css";
-import Home from "./components/Home/Home";
-import History from "./components/History/History";
+import Home from "./pages/Home";
+import History from "./pages/History";
+import MatchSetup from "./pages/MatchSetup";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 function App() {
   return (
@@ -8,6 +9,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/history" element={<History />} />
+        <Route path="/match-setup/:id" element={<MatchSetup />} />
       </Routes>
     </Router>
   );

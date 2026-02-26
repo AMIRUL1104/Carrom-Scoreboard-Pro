@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 const gameModes = [
   {
     title: "1 vs 1",
@@ -62,8 +63,9 @@ function Cards() {
             {mode.description}
           </p>
 
-          {/* Button */}
-          <button
+          {/* Button   /match-setup/:id */}
+          <Link
+            to={`/match-setup/${mode.title.toLowerCase().replace(/\s/g, "-")}`} // e.g., /play/1-vs-1
             className="inline-flex items-center justify-center gap-2.5
              font-[Syne] font-semibold text-[14px]
              rounded-2xl border-none cursor-pointer
@@ -75,7 +77,7 @@ function Cards() {
              hover:bg-[#00f5ae] hover:shadow-[0_0_20px_rgba(0,229,160,0.35)] hover:-translate-y-1"
           >
             {mode.actionText}
-          </button>
+          </Link>
         </div>
       ))}
       {/* </div> */}

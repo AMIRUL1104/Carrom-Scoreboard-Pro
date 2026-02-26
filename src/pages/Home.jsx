@@ -1,6 +1,6 @@
-import Header from "../Header/Header";
-import icon from "../../assets/disc-2.png";
-import Cards from "./Cards";
+import Header from "../components/Header/Header";
+import icon from "../assets/disc-2.png";
+import Cards from "../components/Home/Cards";
 function Home() {
   return (
     <div>
