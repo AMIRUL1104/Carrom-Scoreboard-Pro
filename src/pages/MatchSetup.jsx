@@ -1,17 +1,23 @@
 import { useParams } from "react-router-dom";
+import OneVsOneSetup from "../components/MatchSetup/OneVsOneSetup";
+import TwoVsTwoSetup from "../components/MatchSetup/TwoVsTwoSetup";
+import FreeStyleSetup from "../components/MatchSetup/FreeStyleSetup";
+import Header from "../components/Header/Header";
 function MatchSetup() {
   const { id } = useParams();
-  console.log(id);
 
+  let SetupComponent = null;
+  if (id === "1-vs-1") {
+    SetupComponent = <OneVsOneSetup />;
+  } else if (id === "2-vs-2") {
+    SetupComponent = <TwoVsTwoSetup />;
+  } else {
+    SetupComponent = <FreeStyleSetup />;
+  }
   return (
-    <div style={{ padding: "20px", border: "1px solid #ddd" }}>
-      {" "}
-      <h1>Product ID: {id}</h1>{" "}
-      <p>Tumi ekhon product number {id} er detail dekhcho.</p>{" "}
-      {/* Logic: 'id' er upor base kore tumi backend theke specific data fetch korte parbe. */}{" "}
-      {/* <button onClick={() => navigate("/products")}>
-        Go Back to Products
-      </button>{" "} */}
+    <div>
+      <Header />
+      {SetupComponent}
     </div>
   );
 }
