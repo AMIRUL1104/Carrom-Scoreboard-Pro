@@ -1,7 +1,7 @@
 import SetupHeading from "./SetupHeading";
+import LaunchMatch from "../Button/LaunchMatch";
 import { User } from "lucide-react";
 import { ArrowLeft } from "lucide-react";
-import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 function OneVsOneSetup() {
   return (
@@ -74,26 +74,7 @@ function OneVsOneSetup() {
             />
           </div>
 
-          <button
-            type="submit"
-            className="
-    mt-4
-    w-full
-    inline-flex items-center justify-center gap-2
-    px-7 py-3.5
-    text-[15px] font-semibold tracking-[0.2px]
-    font-[DM Sans]
-    rounded-sm
-    bg-[#00e5a0] text-[#060810]
-    transition-all duration-200
-    hover:bg-[#00f5ae] hover:shadow-[0_0_20px_#00e5a059] hover:-translate-y-0.5
-    active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#00e5a0]
-    whitespace-nowrap
-  "
-          >
-            Launch Match
-            <ArrowRight className="p-2.5" />
-          </button>
+          <LaunchMatch id={"1vs1-setup"} children={"Launch Match"} />
         </form>
       </div>
     </section>
