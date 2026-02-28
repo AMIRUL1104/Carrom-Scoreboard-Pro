@@ -3,7 +3,7 @@ import LaunchMatch from "../Button/LaunchMatch";
 import { User } from "lucide-react";
 import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
-function OneVsOneSetup() {
+function OneVsOneSetup({ handleSubmit }) {
   return (
     <section className=" flex flex-col gap-5  py-12    my-20 w-5xl  mx-auto">
       <div className="max-w-2xl mx-auto w-full ">
@@ -14,7 +14,10 @@ function OneVsOneSetup() {
           <ArrowLeft />
         </Link>
         <SetupHeading type={"Single Player"} />
-        <form className=" space-y-5 p-5 bg-[#111722] rounded-lg w-full  border border-[#1e2836]   ">
+        <form
+          onSubmit={handleSubmit}
+          className=" space-y-5 p-5 bg-[#111722] rounded-lg w-full  border border-[#1e2836]   "
+        >
           <div className=" bg-[#ffffff05] border border-[#1e2836] p-4 rounded-md space-y-3 ">
             {/* <!-- Player 1 Input --> */}
             <div className="space-y-3 ">

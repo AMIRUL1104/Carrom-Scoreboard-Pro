@@ -67,7 +67,6 @@ function Cards() {
           <StartGame title={mode.title} />
         </div>
       ))}
-      {/* </div> */}
     </section>
   );
 }
