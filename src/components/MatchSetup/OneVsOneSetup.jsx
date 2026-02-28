@@ -3,7 +3,46 @@ import LaunchMatch from "../Button/LaunchMatch";
 import { User } from "lucide-react";
 import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
-function OneVsOneSetup({ handleSubmit }) {
+import { useState } from "react";
+function OneVsOneSetup() {
+  const [formData, setFormData] = useState({
+    playerOne: "",
+    playerTwo: "",
+    TargetScore: 29,
+  });
+
+  const [errors, setErrors] = useState({
+    player: "",
+    TargetScore: "",
+  });
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const validateForm = () => {
+    let formErrors = {};
+    if (!formData.playerOne || !formData.playerTwo)
+      formErrors.player = "Name is required";
+    if (formData.TargetScore < 1) formErrors.TargetScore = "Set target score";
+    setErrors(formErrors);
+    return Object.keys(formErrors).length === 0;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (validateForm()) {
+      setFormData((pre) => {
+        return { ...pre, playerOne: "", playerTwo: "" };
+      });
+      alert("Form submitted: " + JSON.stringify(formData));
+    }
+  };
+
   return (
     <section className=" flex flex-col gap-5  py-12    my-20 w-5xl  mx-auto">
       <div className="max-w-2xl mx-auto w-full ">
@@ -20,6 +59,11 @@ function OneVsOneSetup({ handleSubmit }) {
         >
           <div className=" bg-[#ffffff05] border border-[#1e2836] p-4 rounded-md space-y-3 ">
             {/* <!-- Player 1 Input --> */}
+            {errors.player && (
+              <p className=" text-red-600 text-xs text-center col-span-2">
+                {errors.player}
+              </p>
+            )}
             <div className="space-y-3 ">
               <label className=" text-xs font-medium tracking-wide text-[#8a9bb0] ">
                 Player 1 Name
@@ -29,6 +73,9 @@ function OneVsOneSetup({ handleSubmit }) {
                 <input
                   type="text"
                   id="p1-input"
+                  name="playerOne"
+                  value={formData.playerOne}
+                  onChange={handleChange}
                   placeholder="Enter name"
                   className=" pl-13 text-[#e8f0f8] rounded-lg bg-[#ffffff0a] border border-[#1e2836] placeholder:text-(#4a5c70) text-[14px] py-3 px-3.5 outline-0 w-full  transition-all  duration-220ms ease-in-out
                           focus:border-[#00e5a066]
@@ -48,6 +95,9 @@ function OneVsOneSetup({ handleSubmit }) {
                 <input
                   type="text"
                   id="p2-input"
+                  name="playerTwo"
+                  value={formData.playerTwo}
+                  onChange={handleChange}
                   placeholder="Enter name"
                   className=" pl-13 text-[#e8f0f8] rounded-lg bg-[#ffffff0a] border border-[#1e2836] placeholder:text-(#4a5c70) text-[14px] py-3 px-3.5 outline-0 w-full  transition-all  duration-220ms ease-in-out
                           focus:border-[#00e5a066]
@@ -61,15 +111,23 @@ function OneVsOneSetup({ handleSubmit }) {
           </div>
 
           <div className=" flex flex-col items-center justify-around gap-5 bg-[#ffffff05] border border-[#1e2836] p-4 rounded-md ">
+            {/* target score input */}
+            {errors.TargetScore && (
+              <p className=" text-red-600 text-xs text-center col-span-2">
+                {errors.TargetScore}
+              </p>
+            )}
+
             <p className="flex items-center w-full text-[#8a9bb0] text-[14px] font-[Syne] font-semibold">
               <span className="whitespace-nowrap">Target Score</span>
               <span className="flex-1 h-[0.2px] bg-[#8a9bb0] ml-3"></span>
             </p>
             <input
               type="number"
-              name=""
+              name="TargetScore"
+              onChange={handleChange}
               id=""
-              value={29}
+              value={formData.TargetScore}
               className=" px-12 text-[#e8f0f8] font-bold rounded-lg bg-[#ffffff0a] border border-[#1e2836] placeholder:text-(#4a5c70) text-xl py-3 outline-0   transition-all  duration-220ms ease-in-out
                           focus:border-[#00e5a066]
                           focus:bg-[#00e5a00a]

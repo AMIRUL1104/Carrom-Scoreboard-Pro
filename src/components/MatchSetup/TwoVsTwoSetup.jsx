@@ -43,6 +43,15 @@ function TwoVsTwoSetup() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
+      setFormData((pre) => {
+        return {
+          ...pre,
+          playerOne: "",
+          playerTwo: "",
+          playerThree: "",
+          playerFour: "",
+        };
+      });
       alert("Form submitted: " + JSON.stringify(formData));
     }
   };
@@ -90,6 +99,7 @@ function TwoVsTwoSetup() {
                   type="text"
                   id="p1-input"
                   name="playerOne"
+                  value={formData.playerOne}
                   onChange={handleChange}
                   placeholder="Enter name"
                   className=" pl-13 text-[#e8f0f8] rounded-lg bg-[#ffffff0a] border border-[#1e2836] placeholder:text-(#4a5c70) text-[14px] py-3 px-3.5 outline-0 w-full  transition-all  duration-220ms ease-in-out
@@ -111,6 +121,7 @@ function TwoVsTwoSetup() {
                   type="text"
                   id="p2-input"
                   name="playerTwo"
+                  value={formData.playerTwo}
                   onChange={handleChange}
                   placeholder="Enter name"
                   className=" pl-13 text-[#e8f0f8] rounded-lg bg-[#ffffff0a] border border-[#1e2836] placeholder:text-(#4a5c70) text-[14px] py-3 px-3.5 outline-0 w-full  transition-all  duration-220ms ease-in-out
@@ -141,6 +152,7 @@ function TwoVsTwoSetup() {
                   type="text"
                   id="p3-input"
                   name="playerThree"
+                  value={formData.playerThree}
                   onChange={handleChange}
                   placeholder="Enter name"
                   className=" pl-13 text-[#e8f0f8] rounded-lg bg-[#ffffff0a] border border-[#1e2836] placeholder:text-(#4a5c70) text-[14px] py-3 px-3.5 outline-0 w-full  transition-all  duration-220ms ease-in-out
@@ -162,6 +174,7 @@ function TwoVsTwoSetup() {
                   type="text"
                   id="p4-input"
                   name="playerFour"
+                  value={formData.playerFour}
                   onChange={handleChange}
                   placeholder="Enter name"
                   className=" pl-13 text-[#e8f0f8] rounded-lg bg-[#ffffff0a] border border-[#1e2836] placeholder:text-(#4a5c70) text-[14px] py-3 px-3.5 outline-0 w-full  transition-all  duration-220ms ease-in-out
