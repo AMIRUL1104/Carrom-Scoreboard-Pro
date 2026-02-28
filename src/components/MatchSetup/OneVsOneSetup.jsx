@@ -4,6 +4,7 @@ import { User } from "lucide-react";
 import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 function OneVsOneSetup() {
   const [formData, setFormData] = useState({
     playerOne: "",
@@ -26,16 +27,18 @@ function OneVsOneSetup() {
 
   const validateForm = () => {
     let formErrors = {};
-    if (!formData.playerOne || !formData.playerTwo)
-      formErrors.player = "Name is required";
+    // if (!formData.playerOne || !formData.playerTwo)
+    //   formErrors.player = "Name is required";
     if (formData.TargetScore < 1) formErrors.TargetScore = "Set target score";
     setErrors(formErrors);
     return Object.keys(formErrors).length === 0;
   };
 
+  const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
+      navigate(`/play-ground/${"1-vs-1"}`);
       setFormData((pre) => {
         return { ...pre, playerOne: "", playerTwo: "" };
       });
@@ -59,11 +62,11 @@ function OneVsOneSetup() {
         >
           <div className=" bg-[#ffffff05] border border-[#1e2836] p-4 rounded-md space-y-3 ">
             {/* <!-- Player 1 Input --> */}
-            {errors.player && (
+            {/* {errors.player && (
               <p className=" text-red-600 text-xs text-center col-span-2">
                 {errors.player}
               </p>
-            )}
+            )} */}
             <div className="space-y-3 ">
               <label className=" text-xs font-medium tracking-wide text-[#8a9bb0] ">
                 Player 1 Name
@@ -76,6 +79,7 @@ function OneVsOneSetup() {
                   name="playerOne"
                   value={formData.playerOne}
                   onChange={handleChange}
+                  required
                   placeholder="Enter name"
                   className=" pl-13 text-[#e8f0f8] rounded-lg bg-[#ffffff0a] border border-[#1e2836] placeholder:text-(#4a5c70) text-[14px] py-3 px-3.5 outline-0 w-full  transition-all  duration-220ms ease-in-out
                           focus:border-[#00e5a066]
@@ -98,6 +102,7 @@ function OneVsOneSetup() {
                   name="playerTwo"
                   value={formData.playerTwo}
                   onChange={handleChange}
+                  required
                   placeholder="Enter name"
                   className=" pl-13 text-[#e8f0f8] rounded-lg bg-[#ffffff0a] border border-[#1e2836] placeholder:text-(#4a5c70) text-[14px] py-3 px-3.5 outline-0 w-full  transition-all  duration-220ms ease-in-out
                           focus:border-[#00e5a066]
@@ -128,6 +133,7 @@ function OneVsOneSetup() {
               onChange={handleChange}
               id=""
               value={formData.TargetScore}
+              required
               className=" px-12 text-[#e8f0f8] font-bold rounded-lg bg-[#ffffff0a] border border-[#1e2836] placeholder:text-(#4a5c70) text-xl py-3 outline-0   transition-all  duration-220ms ease-in-out
                           focus:border-[#00e5a066]
                           focus:bg-[#00e5a00a]

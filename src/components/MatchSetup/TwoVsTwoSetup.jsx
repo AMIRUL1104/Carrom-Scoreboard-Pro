@@ -1,5 +1,6 @@
 import SetupHeading from "./SetupHeading";
 import LaunchMatch from "../Button/LaunchMatch";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { User } from "lucide-react";
@@ -11,6 +12,8 @@ function TwoVsTwoSetup() {
     playerThree: "",
     playerFour: "",
     TargetScore: 29,
+    gameMode: "dubblePlayer",
+    gameStart: new Date(),
   });
 
   const [errors, setErrors] = useState({
@@ -34,15 +37,18 @@ function TwoVsTwoSetup() {
       !formData.playerThree ||
       !formData.playerFour
     )
-      formErrors.player = "Name is required";
-    if (formData.TargetScore < 1) formErrors.TargetScore = "Set target score";
+      if (formData.TargetScore < 1)
+        // formErrors.player = "Name is required";
+        formErrors.TargetScore = "Set target score";
     setErrors(formErrors);
     return Object.keys(formErrors).length === 0;
   };
 
+  const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
+      navigate(`/play-ground/${"2-vs-2"}`);
       setFormData((pre) => {
         return {
           ...pre,
@@ -52,6 +58,7 @@ function TwoVsTwoSetup() {
           playerFour: "",
         };
       });
+
       alert("Form submitted: " + JSON.stringify(formData));
     }
   };
@@ -76,11 +83,11 @@ function TwoVsTwoSetup() {
             <span className="flex-1 h-[0.5px] bg-[#8a9bb0] ml-3"></span>
           </p>
 
-          {errors.player && (
+          {/* {errors.player && (
             <p className=" text-red-600 text-xs text-center col-span-2">
               {errors.player}
             </p>
-          )}
+          )} */}
 
           {/* <!-- team A Input --> */}
           <div className=" col-span-1 bg-[#ffffff05] border border-[#1e2836] p-4 rounded-md space-y-3 ">
@@ -101,6 +108,7 @@ function TwoVsTwoSetup() {
                   name="playerOne"
                   value={formData.playerOne}
                   onChange={handleChange}
+                  required
                   placeholder="Enter name"
                   className=" pl-13 text-[#e8f0f8] rounded-lg bg-[#ffffff0a] border border-[#1e2836] placeholder:text-(#4a5c70) text-[14px] py-3 px-3.5 outline-0 w-full  transition-all  duration-220ms ease-in-out
                           focus:border-[#00e5a066]
@@ -123,6 +131,7 @@ function TwoVsTwoSetup() {
                   name="playerTwo"
                   value={formData.playerTwo}
                   onChange={handleChange}
+                  required
                   placeholder="Enter name"
                   className=" pl-13 text-[#e8f0f8] rounded-lg bg-[#ffffff0a] border border-[#1e2836] placeholder:text-(#4a5c70) text-[14px] py-3 px-3.5 outline-0 w-full  transition-all  duration-220ms ease-in-out
                           focus:border-[#00e5a066]
@@ -154,6 +163,7 @@ function TwoVsTwoSetup() {
                   name="playerThree"
                   value={formData.playerThree}
                   onChange={handleChange}
+                  required
                   placeholder="Enter name"
                   className=" pl-13 text-[#e8f0f8] rounded-lg bg-[#ffffff0a] border border-[#1e2836] placeholder:text-(#4a5c70) text-[14px] py-3 px-3.5 outline-0 w-full  transition-all  duration-220ms ease-in-out
                           focus:border-[#00e5a066]
@@ -176,6 +186,7 @@ function TwoVsTwoSetup() {
                   name="playerFour"
                   value={formData.playerFour}
                   onChange={handleChange}
+                  required
                   placeholder="Enter name"
                   className=" pl-13 text-[#e8f0f8] rounded-lg bg-[#ffffff0a] border border-[#1e2836] placeholder:text-(#4a5c70) text-[14px] py-3 px-3.5 outline-0 w-full  transition-all  duration-220ms ease-in-out
                           focus:border-[#00e5a066]
@@ -205,6 +216,7 @@ function TwoVsTwoSetup() {
               id=""
               onChange={handleChange}
               value={formData.TargetScore}
+              required
               className=" px-12 text-[#e8f0f8] font-bold rounded-lg bg-[#ffffff0a] border border-[#1e2836] placeholder:text-(#4a5c70) text-xl py-3 outline-0   transition-all  duration-220ms ease-in-out
                           focus:border-[#00e5a066]
                           focus:bg-[#00e5a00a]
