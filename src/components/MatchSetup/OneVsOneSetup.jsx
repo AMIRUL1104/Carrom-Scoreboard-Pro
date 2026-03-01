@@ -5,11 +5,13 @@ import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-function OneVsOneSetup() {
+function OneVsOneSetup({ setSetupData }) {
   const [formData, setFormData] = useState({
     playerOne: "",
     playerTwo: "",
     TargetScore: 29,
+    gameMode: "Single Player",
+    gameStart: new Date(),
   });
 
   const [errors, setErrors] = useState({
@@ -38,11 +40,14 @@ function OneVsOneSetup() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
+      setSetupData(() => {
+        return formData;
+      });
+
       navigate(`/play-ground/${"1-vs-1"}`);
       setFormData((pre) => {
         return { ...pre, playerOne: "", playerTwo: "" };
       });
-      alert("Form submitted: " + JSON.stringify(formData));
     }
   };
 
@@ -141,7 +146,7 @@ function OneVsOneSetup() {
             />
           </div>
 
-          <LaunchMatch id={"1vs1-setup"} children={"Launch Match"} />
+          <LaunchMatch children={"Launch Match"} />
         </form>
       </div>
     </section>

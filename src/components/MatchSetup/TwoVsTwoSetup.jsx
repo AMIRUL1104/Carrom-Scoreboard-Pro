@@ -5,14 +5,14 @@ import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { User } from "lucide-react";
 import { useState } from "react";
-function TwoVsTwoSetup() {
+function TwoVsTwoSetup({ setSetupData }) {
   const [formData, setFormData] = useState({
     playerOne: "",
     playerTwo: "",
     playerThree: "",
     playerFour: "",
     TargetScore: 29,
-    gameMode: "dubblePlayer",
+    gameMode: "Dubble Player",
     gameStart: new Date(),
   });
 
@@ -48,6 +48,7 @@ function TwoVsTwoSetup() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
+      setSetupData(formData);
       navigate(`/play-ground/${"2-vs-2"}`);
       setFormData((pre) => {
         return {
@@ -58,8 +59,6 @@ function TwoVsTwoSetup() {
           playerFour: "",
         };
       });
-
-      alert("Form submitted: " + JSON.stringify(formData));
     }
   };
 
@@ -225,7 +224,7 @@ function TwoVsTwoSetup() {
           </div>
 
           {/* match launch button */}
-          <LaunchMatch id={"2vs2-setup"} children={"Launch Match"} />
+          <LaunchMatch children={"Launch Match"} />
         </form>
       </div>
     </section>

@@ -1,10 +1,9 @@
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
-function LaunchMatch({ id, children }) {
+function LaunchMatch({ children }) {
   return (
     <button
       type="submit"
-      id={id}
       className="
     mt-4
     w-full col-span-2
