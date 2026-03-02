@@ -4,7 +4,11 @@ function DubbleGround({ SetupData }) {
   const [pointCount, setPointCount] = useState({
     TeamA: 0,
     TeamB: 0,
+    boardPoint: [],
+    countBoard: 1,
   });
+  console.log(pointCount);
+
   const [newPoint, setNewPoint] = useState({
     teamName: "",
     pointA: 0,
@@ -17,16 +21,16 @@ function DubbleGround({ SetupData }) {
       playerOne: SetupData.playerOne,
       playerTwo: SetupData.playerTwo,
       teamName: "TeamA",
-      point: newPoint.pointA,
-      totalPoint: pointCount.TeamA,
+      point: Number(newPoint.pointA),
+      totalPoint: Number(pointCount.TeamA),
     },
     {
       team: "Team B",
       playerOne: SetupData.playerThree,
       playerTwo: SetupData.playerFour,
       teamName: "TeamB",
-      point: newPoint.pointB,
-      totalPoint: pointCount.TeamB,
+      point: Number(newPoint.pointB),
+      totalPoint: Number(pointCount.TeamB),
     },
   ];
 
@@ -63,15 +67,36 @@ function DubbleGround({ SetupData }) {
     const teamName = newPoint.teamName;
 
     if (btnName !== teamName) return;
+
     const { TeamA, TeamB } = pointCount;
+
     if (teamName === "TeamA") {
       const value = newPoint.pointA;
       if (value > 14 || value < 0) return;
 
       const addPoint = Number(TeamA) + Number(value);
-      setPointCount({
-        ...pointCount,
-        [teamName]: addPoint,
+
+      setPointCount((pre) => {
+        const teamInfo = teamCardInfo.find(
+          (team) => team.teamName === teamName,
+        );
+
+        const newBoard = {
+          id: crypto.randomUUID(),
+          teamName: teamName,
+          playerOne: teamInfo.playerOne,
+          playerTwo: teamInfo.playerTwo,
+          value: Number(value),
+          boardNO: pointCount.countBoard,
+          totalPoint: Number(teamInfo.totalPoint) + Number(value),
+        };
+
+        return {
+          ...pre,
+          [teamName]: addPoint,
+          boardPoint: [newBoard, ...pre.boardPoint],
+          countBoard: Number(pre.countBoard + 1),
+        };
       });
       clearNewPoint();
     } else {
@@ -79,17 +104,37 @@ function DubbleGround({ SetupData }) {
       if (value > 14 || value < 0) return;
       const addPoint = Number(TeamB) + Number(value);
 
-      setPointCount({
-        ...pointCount,
-        [teamName]: addPoint,
+      setPointCount((pre) => {
+        const teamInfo = teamCardInfo.find(
+          (team) => team.teamName === teamName,
+        );
+
+        const newBoard = {
+          id: crypto.randomUUID(),
+          teamName: teamName,
+          playerOne: teamInfo.playerOne,
+          playerTwo: teamInfo.playerTwo,
+          value: Number(value),
+          boardNO: pointCount.countBoard,
+          totalPoint: Number(teamInfo.totalPoint) + Number(value),
+        };
+
+        return {
+          ...pre,
+          [teamName]: addPoint,
+          boardPoint: [newBoard, ...pre.boardPoint],
+          countBoard: Number(pre.countBoard + 1),
+        };
       });
+
       clearNewPoint();
     }
   };
 
   return (
-    <div
-      className="
+    <>
+      <div
+        className="
       w-full
       min-h-screen
 
@@ -110,12 +155,12 @@ function DubbleGround({ SetupData }) {
 
       bg-[#060810]
     "
-    >
-      {/* TEAM CARD */}
-      {teamCardInfo.map((team) => (
-        <div
-          key={team.team}
-          className="
+      >
+        {/* TEAM CARD */}
+        {teamCardInfo.map((team) => (
+          <div
+            key={team.team}
+            className="
           w-full
           sm:flex-1
 
@@ -135,9 +180,9 @@ function DubbleGround({ SetupData }) {
           transition-all
           duration-200
         "
-        >
-          <h2
-            className="
+          >
+            <h2
+              className="
             text-lg
             sm:text-xl
 
@@ -150,16 +195,16 @@ function DubbleGround({ SetupData }) {
 
             mb-3
           "
-          >
-            {team.team}
-          </h2>
+            >
+              {team.team}
+            </h2>
 
-          <p className="text-[#8a9bb0] text-sm mb-2">
-            {team.playerOne} + {team.playerTwo}
-          </p>
+            <p className="text-[#8a9bb0] text-sm mb-2">
+              {team.playerOne} + {team.playerTwo}
+            </p>
 
-          <h1
-            className="
+            <h1
+              className="
             text-4xl
             sm:text-5xl
 
@@ -168,17 +213,21 @@ function DubbleGround({ SetupData }) {
 
             mb-2
           "
-          >
-            {team.totalPoint}
-          </h1>
+            >
+              {team.totalPoint}
+            </h1>
 
-          <p className="text-xs text-[#4a5c70] mb-6">
-            Target: {TargetScore} <span className="text-[#00e5a0]">(0%)</span>
-          </p>
+            <p className="text-xs text-[#4a5c70] mb-6">
+              Target: {TargetScore} ({" "}
+              <span className="text-[#00e5a0]">
+                {Math.round((team.totalPoint * 100) / TargetScore)}%
+              </span>
+              )
+            </p>
 
-          {/* Controls */}
-          <div
-            className="
+            {/* Controls */}
+            <div
+              className="
             w-full
 
             flex flex-col
@@ -186,11 +235,11 @@ function DubbleGround({ SetupData }) {
 
             gap-3
           "
-          >
-            {/* -1 Button */}
-            <button
-              type="button"
-              className="
+            >
+              {/* -1 Button */}
+              <button
+                type="button"
+                className="
               w-full
               sm:w-auto
 
@@ -214,18 +263,18 @@ function DubbleGround({ SetupData }) {
 
               active:scale-90
             "
-            >
-              -1
-            </button>
+              >
+                -1
+              </button>
 
-            {/* Input */}
-            <input
-              type="number"
-              name={team.teamName}
-              id={team.team}
-              value={team.point}
-              onChange={handleChange}
-              className="
+              {/* Input */}
+              <input
+                type="number"
+                name={team.teamName}
+                id={team.team}
+                value={team.point}
+                onChange={handleChange}
+                className="
               w-full
               sm:flex-1
 
@@ -246,14 +295,14 @@ function DubbleGround({ SetupData }) {
               transition-all
               duration-200
             "
-            />
+              />
 
-            {/* Add Points */}
-            <button
-              type="button"
-              name={team.teamName}
-              onClick={handleAddPoints}
-              className="
+              {/* Add Points */}
+              <button
+                type="button"
+                name={team.teamName}
+                onClick={handleAddPoints}
+                className="
               w-full
               sm:w-auto
 
@@ -275,13 +324,77 @@ function DubbleGround({ SetupData }) {
               active:scale-90
               active:translate-y-px
             "
-            >
-              Add Points
-            </button>
+              >
+                Add Points
+              </button>
+            </div>
           </div>
+        ))}
+      </div>
+      {/* Responsive Score Board Table */}
+      {/* Scrollable Score Table */}
+      <div className="w-full px-4 sm:px-8 lg:px-16 pb-10 bg-[#060810]">
+        <div
+          className="
+      w-full
+      max-h-100        /* maximum height control */
+      overflow-auto        /* vertical + horizontal scroll */
+      bg-[#111722]
+      border border-[#1e2836]
+      rounded-[28px]
+      shadow-[0_4px_24px_rgba(0,0,0,0.5),0_1px_0_rgba(255,255,255,0.04)_inset]
+    "
+        >
+          <table className="w-full min-w-125 max-sm:min-w-83 text-[#e8f0f8] text-xs sm:text-sm lg:text-base">
+            {/* Table Header - always visible */}
+            <thead className="bg-[#0d1117] sticky top-0 z-10">
+              <tr>
+                <th className="px-0 sm:px-6 py-3 text-center font-semibold text-[#8a9bb0] ">
+                  No
+                </th>
+                <th className="px-0 sm:px-6 py-3 text-center font-semibold text-[#8a9bb0] ">
+                  Team
+                </th>
+                <th className="px-0 sm:px-6 py-3 text-center font-semibold text-[#8a9bb0] ">
+                  Score
+                </th>
+                <th className="px-0 sm:px-6 py-3 text-center font-semibold text-[#8a9bb0] ">
+                  Point
+                </th>
+              </tr>
+            </thead>
+
+            <tbody className="divide-y divide-[#1e2836]">
+              {pointCount.boardPoint.map((board) => (
+                <tr
+                  key={board.id}
+                  className="
+              hover:bg-[#0d1117]
+              transition-colors duration-200
+            "
+                >
+                  <td className="px-0 sm:px-6 py-3 font-medium text-center">
+                    {board.boardNO}
+                  </td>
+
+                  <td className="px-0 sm:px-6 py-3 text-[#00e5a0] font-semibold text-center capitalize">
+                    {board.playerOne} + {board.playerTwo}
+                  </td>
+
+                  <td className="px-0 sm:px-6 py-3 text-center">
+                    {board.value}
+                  </td>
+
+                  <td className="px-0 sm:px-6 py-3 text-[#8a9bb0] text-center">
+                    {board.totalPoint}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
-      ))}
-    </div>
+      </div>
+    </>
   );
 }
 

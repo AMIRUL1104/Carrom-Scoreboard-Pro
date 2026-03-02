@@ -17,7 +17,7 @@ function PlayGround({ SetupData }) {
     ground = <DubbleGround SetupData={SetupData} />;
   }
   return (
-    <div>
+    <div className="max-w-400 mx-auto">
       <GameStatus gameMode={gameMode} TargetScore={TargetScore} />
       {ground}
     </div>
