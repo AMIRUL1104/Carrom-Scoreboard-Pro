@@ -1,19 +1,23 @@
 import { useState } from "react";
-
+import { useNavigate, Link } from "react-router-dom";
+import { Trophy } from "lucide-react";
 function DubbleGround({ SetupData }) {
+  // Drawer visibility
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
   const [pointCount, setPointCount] = useState({
     TeamA: 0,
     TeamB: 0,
     boardPoint: [],
     countBoard: 1,
   });
-  console.log(pointCount);
 
   const [newPoint, setNewPoint] = useState({
     teamName: "",
     pointA: 0,
     pointB: 0,
   });
+
   const { TargetScore } = SetupData;
   const teamCardInfo = [
     {
@@ -21,7 +25,7 @@ function DubbleGround({ SetupData }) {
       playerOne: SetupData.playerOne,
       playerTwo: SetupData.playerTwo,
       teamName: "TeamA",
-      point: Number(newPoint.pointA),
+      point: newPoint.pointA,
       totalPoint: Number(pointCount.TeamA),
     },
     {
@@ -29,7 +33,7 @@ function DubbleGround({ SetupData }) {
       playerOne: SetupData.playerThree,
       playerTwo: SetupData.playerFour,
       teamName: "TeamB",
-      point: Number(newPoint.pointB),
+      point: newPoint.pointB,
       totalPoint: Number(pointCount.TeamB),
     },
   ];
@@ -62,6 +66,18 @@ function DubbleGround({ SetupData }) {
       }
     });
   };
+
+  const navigate = useNavigate();
+  // Close drawer and reset selected item
+  const closeDrawer = () => {
+    setIsDrawerOpen(false);
+    navigate("/");
+  };
+
+  function winningModal() {
+    setIsDrawerOpen(true);
+  }
+
   const handleAddPoints = (e) => {
     const btnName = e.target.name;
     const teamName = newPoint.teamName;
@@ -73,7 +89,6 @@ function DubbleGround({ SetupData }) {
     if (teamName === "TeamA") {
       const value = newPoint.pointA;
       if (value > 14 || value < 0) return;
-
       const addPoint = Number(TeamA) + Number(value);
 
       setPointCount((pre) => {
@@ -98,6 +113,9 @@ function DubbleGround({ SetupData }) {
           countBoard: Number(pre.countBoard + 1),
         };
       });
+      if (addPoint >= TargetScore) {
+        winningModal();
+      }
       clearNewPoint();
     } else {
       const value = newPoint.pointB;
@@ -126,7 +144,9 @@ function DubbleGround({ SetupData }) {
           countBoard: Number(pre.countBoard + 1),
         };
       });
-
+      if (addPoint >= Number(TargetScore)) {
+        winningModal();
+      }
       clearNewPoint();
     }
   };
@@ -218,7 +238,7 @@ function DubbleGround({ SetupData }) {
             </h1>
 
             <p className="text-xs text-[#4a5c70] mb-6">
-              Target: {TargetScore} ({" "}
+              Target: {Number(TargetScore)} ({" "}
               <span className="text-[#00e5a0]">
                 {Math.round((team.totalPoint * 100) / TargetScore)}%
               </span>
@@ -332,7 +352,7 @@ function DubbleGround({ SetupData }) {
         ))}
       </div>
       {/* Responsive Score Board Table */}
-      {/* Scrollable Score Table */}
+
       <div className="w-full px-4 sm:px-8 lg:px-16 pb-10 bg-[#060810]">
         <div
           className="
@@ -394,6 +414,224 @@ function DubbleGround({ SetupData }) {
           </table>
         </div>
       </div>
+
+      {/* Overlay */}
+      {isDrawerOpen && (
+        <div
+          className="
+      fixed inset-0 z-40
+
+      bg-[#060810d9]
+      backdrop-blur-md
+
+      transition-opacity
+      duration-300
+    "
+        />
+      )}
+
+      {/* Modal Wrapper */}
+      {isDrawerOpen && (
+        <div
+          className="
+      fixed inset-0 z-50
+
+      flex items-center justify-center
+
+      p-4
+
+      pointer-events-none
+    "
+        >
+          <div
+            className="
+        w-full
+        max-w-md
+
+        bg-[#111722]
+        border border-[rgba(0,229,160,0.25)]
+
+        rounded-[28px]
+
+        px-6 py-8
+        sm:px-10 sm:py-12
+
+        text-center
+
+        shadow-[0_0_20px_rgba(0,229,160,0.35),0_4px_24px_rgba(0,0,0,0.5)]
+
+        relative overflow-hidden
+
+        transform
+        transition-all
+        duration-300
+        ease-out
+
+        scale-100 opacity-100
+
+        pointer-events-auto
+      "
+          >
+            {/* Top Accent Line */}
+            <div
+              className="
+          absolute top-0 left-0 right-0
+          h-0.5
+          bg-linear-to-r
+          from-transparent
+          via-[#00e5a0]
+          to-transparent
+        "
+            />
+
+            {/* Trophy */}
+            <div
+              className="
+    flex justify-center
+
+    text-[#ffd700]
+
+    text-5xl
+    sm:text-6xl
+
+    mb-4
+
+    drop-shadow-[0_0_12px_rgba(255,215,0,0.45)]
+
+    transform
+    transition-all
+    duration-500
+    ease-out
+  "
+            >
+              <Trophy />
+            </div>
+
+            {/* Pretitle */}
+            <p
+              className="
+          text-[11px]
+          tracking-[2px]
+          uppercase
+          font-semibold
+
+          text-[#00e5a0]
+
+          mb-2
+        "
+            >
+              MATCH WINNER
+            </p>
+
+            {/* Winner Name */}
+            <h2
+              className="
+          font-[Syne]
+          font-extrabold
+
+          text-2xl
+          sm:text-3xl
+
+          text-[#e8f0f8]
+
+          mb-2
+        "
+            >
+              Team A
+            </h2>
+
+            {/* Score Info */}
+            <p
+              className="
+          text-sm
+          text-[#8a9bb0]
+
+          mb-8
+        "
+            >
+              final score:
+              <span className="ml-1 text-[#00e5a0] font-semibold">29</span>.
+              Target was 29 pts
+            </p>
+
+            {/* Actions */}
+            <div
+              className="
+          flex flex-col
+          sm:flex-row
+
+          gap-3
+        "
+            >
+              {/* View History */}
+              <button
+                onClick={() => {
+                  navigate("/history");
+                  closeDrawer();
+                }}
+                className="
+            w-full
+            sm:flex-1
+
+            px-4 py-2
+
+            rounded-[14px]
+
+            bg-[rgba(255,255,255,0.06)]
+            border border-[#1e2836]
+
+            text-[#e8f0f8]
+            font-semibold
+
+            transform
+            transition-all
+            duration-200
+            ease-out
+
+            hover:bg-[rgba(255,255,255,0.1)]
+            hover:border-[#2a3a50]
+
+            active:scale-95
+          "
+              >
+                View History
+              </button>
+
+              {/* New Match */}
+              <button
+                onClick={() => {
+                  navigate("/match-setup/2-vs-2");
+                  closeDrawer();
+                }}
+                className="
+            w-full
+            sm:flex-1
+
+            px-4 py-2
+
+            rounded-[14px]
+
+            bg-[#00e5a0]
+            text-black
+            font-semibold
+
+            transform
+            transition-all
+            duration-200
+            ease-out
+
+            hover:shadow-[0_0_20px_rgba(0,229,160,0.35)]
+
+            active:scale-95
+            active:translate-y-px
+          "
+              >
+                New Match
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
