@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Trophy } from "lucide-react";
 function DubbleGround({ SetupData }) {
@@ -37,6 +37,45 @@ function DubbleGround({ SetupData }) {
       totalPoint: Number(pointCount.TeamB),
     },
   ];
+
+  // const [matchHistory, setMatchHistory] = useState([
+  //   {
+  //     id: crypto.randomUUID(),
+  //     gameMode: SetupData.gameMode,
+  //     gameStart: SetupData.gameStart,
+  //     targetScore: TargetScore,
+  //     boardPoint: [],
+  //     countBoard: 0,
+  //     winner: {},
+  //     losser: {},
+  //   },
+  // ]);
+  const [matchHistory, setMatchHistory] = useState({
+    id: crypto.randomUUID(),
+    gameMode: SetupData.gameMode,
+    gameStart: SetupData.gameStart,
+    targetScore: TargetScore,
+    boardPoint: [],
+    countBoard: 0,
+    winner: {},
+    losser: {},
+  });
+  // const [matchHistory, setMatchHistory] = useState();
+  const setMatchData = (boardPoint, countBoard, winner, losser) => {
+    setMatchHistory((pre) => {
+      return {
+        ...pre,
+        boardPoint: boardPoint,
+        countBoard: countBoard,
+        winner: winner,
+        losser: losser,
+      };
+    });
+  };
+
+  useEffect(() => {
+    console.log(matchHistory);
+  }, [matchHistory]);
 
   function clearNewPoint() {
     setNewPoint({
@@ -91,21 +130,17 @@ function DubbleGround({ SetupData }) {
       if (value > 14 || value < 0) return;
       const addPoint = Number(TeamA) + Number(value);
 
+      const teamInfo = teamCardInfo.find((team) => team.teamName === teamName);
+      const newBoard = {
+        id: crypto.randomUUID(),
+        teamName: teamName,
+        playerOne: teamInfo.playerOne,
+        playerTwo: teamInfo.playerTwo,
+        value: Number(value),
+        boardNO: pointCount.countBoard,
+        totalPoint: Number(teamInfo.totalPoint) + Number(value),
+      };
       setPointCount((pre) => {
-        const teamInfo = teamCardInfo.find(
-          (team) => team.teamName === teamName,
-        );
-
-        const newBoard = {
-          id: crypto.randomUUID(),
-          teamName: teamName,
-          playerOne: teamInfo.playerOne,
-          playerTwo: teamInfo.playerTwo,
-          value: Number(value),
-          boardNO: pointCount.countBoard,
-          totalPoint: Number(teamInfo.totalPoint) + Number(value),
-        };
-
         return {
           ...pre,
           [teamName]: addPoint,
@@ -114,7 +149,33 @@ function DubbleGround({ SetupData }) {
         };
       });
       if (addPoint >= TargetScore) {
+        const findWinner = teamCardInfo.find(
+          (team) => teamName === team.teamName,
+        );
+        const findLosser = teamCardInfo.find(
+          (team) => teamName !== team.teamName,
+        );
+
+        const winner = {
+          teamName: findWinner.teamName,
+          playerOne: findWinner.playerOne,
+          playerTwo: findWinner.playerTwo,
+          totalPoint: Number(findWinner.totalPoint) + Number(value),
+        };
+        const losser = {
+          teamName: findLosser.teamName,
+          playerOne: findLosser.playerOne,
+          playerTwo: findLosser.playerTwo,
+          totalPoint: findLosser.totalPoint,
+        };
+
         winningModal();
+        setMatchData(
+          [newBoard, ...pointCount.boardPoint],
+          pointCount.countBoard,
+          winner,
+          losser,
+        );
       }
       clearNewPoint();
     } else {
@@ -122,21 +183,17 @@ function DubbleGround({ SetupData }) {
       if (value > 14 || value < 0) return;
       const addPoint = Number(TeamB) + Number(value);
 
+      const teamInfo = teamCardInfo.find((team) => team.teamName === teamName);
+      const newBoard = {
+        id: crypto.randomUUID(),
+        teamName: teamName,
+        playerOne: teamInfo.playerOne,
+        playerTwo: teamInfo.playerTwo,
+        value: Number(value),
+        boardNO: pointCount.countBoard,
+        totalPoint: Number(teamInfo.totalPoint) + Number(value),
+      };
       setPointCount((pre) => {
-        const teamInfo = teamCardInfo.find(
-          (team) => team.teamName === teamName,
-        );
-
-        const newBoard = {
-          id: crypto.randomUUID(),
-          teamName: teamName,
-          playerOne: teamInfo.playerOne,
-          playerTwo: teamInfo.playerTwo,
-          value: Number(value),
-          boardNO: pointCount.countBoard,
-          totalPoint: Number(teamInfo.totalPoint) + Number(value),
-        };
-
         return {
           ...pre,
           [teamName]: addPoint,
@@ -144,8 +201,35 @@ function DubbleGround({ SetupData }) {
           countBoard: Number(pre.countBoard + 1),
         };
       });
-      if (addPoint >= Number(TargetScore)) {
+      if (addPoint >= TargetScore) {
+        const findWinner = teamCardInfo.find(
+          (team) => teamName === team.teamName,
+        );
+
+        const findLosser = teamCardInfo.find(
+          (team) => teamName != team.teamName,
+        );
+
+        const winner = {
+          teamName: findWinner.teamName,
+          playerOne: findWinner.playerOne,
+          playerTwo: findWinner.playerTwo,
+          totalPoint: Number(findWinner.totalPoint) + Number(value),
+        };
+        const losser = {
+          teamName: findLosser.teamName,
+          playerOne: findLosser.playerOne,
+          playerTwo: findLosser.playerTwo,
+          totalPoint: findLosser.totalPoint,
+        };
+
         winningModal();
+        setMatchData(
+          [newBoard, ...pointCount.boardPoint],
+          pointCount.countBoard,
+          winner,
+          losser,
+        );
       }
       clearNewPoint();
     }
