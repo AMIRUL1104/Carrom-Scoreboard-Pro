@@ -74,7 +74,16 @@ function DubbleGround({ SetupData }) {
   };
 
   useEffect(() => {
-    console.log(matchHistory);
+    if (matchHistory.countBoard > 1) {
+      const previousHistory =
+        JSON.parse(localStorage.getItem("historyData")) || [];
+
+      const updatedHistory = [matchHistory, ...previousHistory];
+      localStorage.setItem("historyData", JSON.stringify(updatedHistory));
+    }
+
+    // remove locale data for work
+    // localStorage.setItem("historyData", JSON.stringify([]));
   }, [matchHistory]);
 
   function clearNewPoint() {
