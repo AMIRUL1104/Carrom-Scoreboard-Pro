@@ -1,16 +1,9 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Trophy } from "lucide-react";
-function DubbleGround({ SetupData }) {
+function DubbleGround({ SetupData, pointCount, setPointCount }) {
   // Drawer visibility
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-
-  const [pointCount, setPointCount] = useState({
-    TeamA: 0,
-    TeamB: 0,
-    boardPoint: [],
-    countBoard: 1,
-  });
 
   const [newPoint, setNewPoint] = useState({
     teamName: "",
@@ -38,18 +31,6 @@ function DubbleGround({ SetupData }) {
     },
   ];
 
-  // const [matchHistory, setMatchHistory] = useState([
-  //   {
-  //     id: crypto.randomUUID(),
-  //     gameMode: SetupData.gameMode,
-  //     gameStart: SetupData.gameStart,
-  //     targetScore: TargetScore,
-  //     boardPoint: [],
-  //     countBoard: 0,
-  //     winner: {},
-  //     losser: {},
-  //   },
-  // ]);
   const [matchHistory, setMatchHistory] = useState({
     id: crypto.randomUUID(),
     gameMode: SetupData.gameMode,
@@ -60,6 +41,7 @@ function DubbleGround({ SetupData }) {
     winner: {},
     losser: {},
   });
+
   // const [matchHistory, setMatchHistory] = useState();
   const setMatchData = (boardPoint, countBoard, winner, losser) => {
     setMatchHistory((pre) => {
@@ -118,8 +100,8 @@ function DubbleGround({ SetupData }) {
   const navigate = useNavigate();
   // Close drawer and reset selected item
   const closeDrawer = () => {
-    setIsDrawerOpen(false);
     navigate("/");
+    setIsDrawerOpen(false);
   };
 
   function winningModal() {
@@ -312,7 +294,7 @@ function DubbleGround({ SetupData }) {
               {team.team}
             </h2>
 
-            <p className="text-[#8a9bb0] text-sm mb-2">
+            <p className="text-[#8a9bb0] text-sm mb-2 capitalize">
               {team.playerOne} + {team.playerTwo}
             </p>
 

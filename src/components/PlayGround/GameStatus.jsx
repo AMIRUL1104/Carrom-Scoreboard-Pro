@@ -1,6 +1,6 @@
 import { RotateCcw, Trophy } from "lucide-react";
 
-function GameStatus({ gameMode, TargetScore }) {
+function GameStatus({ gameMode, TargetScore, resetMatch }) {
   // return (
   //   <div className="bg-[#0d1117e6] backdrop-blur-lg border-b border-[#1e2836] px-6 py-3.5 flex items-center gap-3.5 flex-wrap">
   //     <div className="flex items-center gap-2 flex-1">
@@ -117,6 +117,7 @@ function GameStatus({ gameMode, TargetScore }) {
       {/* Reset Button */}
       <button
         data-action="reset-match"
+        onClick={resetMatch}
         className="
         w-full
         sm:w-auto
