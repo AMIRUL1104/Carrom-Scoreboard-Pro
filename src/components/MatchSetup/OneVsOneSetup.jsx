@@ -72,7 +72,7 @@ function OneVsOneSetup({ setSetupData }) {
             {/* Player 1 Input */}
             <div className="space-y-2">
               <label className="text-xs sm:text-sm font-medium tracking-wide text-[#8a9bb0]">
-                Player 1 Name
+                Player 1
               </label>
               <div className="relative mt-1.5">
                 <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" />
@@ -95,7 +95,7 @@ function OneVsOneSetup({ setSetupData }) {
             {/* Player 2 Input */}
             <div className="space-y-2">
               <label className="text-xs sm:text-sm font-medium tracking-wide text-[#8a9bb0]">
-                Player 2 Name
+                Player 2
               </label>
               <div className="relative mt-1.5">
                 <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" />

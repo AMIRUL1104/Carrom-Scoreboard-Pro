@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Trophy } from "lucide-react";
 function DubbleGround({ SetupData, pointCount, setPointCount }) {
   // Drawer visibility
@@ -100,7 +100,7 @@ function DubbleGround({ SetupData, pointCount, setPointCount }) {
   const navigate = useNavigate();
   // Close drawer and reset selected item
   const closeDrawer = () => {
-    navigate("/");
+    // navigate("/");-
     setIsDrawerOpen(false);
   };
 
@@ -493,6 +493,10 @@ function DubbleGround({ SetupData, pointCount, setPointCount }) {
       {/* Overlay */}
       {isDrawerOpen && (
         <div
+          onClick={() => {
+            navigate("/");
+            closeDrawer();
+          }}
           className="
       fixed inset-0 z-40
 
@@ -612,9 +616,11 @@ function DubbleGround({ SetupData, pointCount, setPointCount }) {
           mb-2
         "
             >
-              Team A
+              {matchHistory.winner.teamName}
             </h2>
-
+            <p className=" capitalize mb-3.5">
+              {matchHistory.winner.playerOne} & {matchHistory.winner.playerTwo}
+            </p>
             {/* Score Info */}
             <p
               className="
@@ -624,9 +630,11 @@ function DubbleGround({ SetupData, pointCount, setPointCount }) {
           mb-8
         "
             >
-              final score:
-              <span className="ml-1 text-[#00e5a0] font-semibold">29</span>.
-              Target was 29 pts
+              Final score:
+              <span className="ml-1 text-[#00e5a0] font-semibold">
+                {matchHistory.winner.totalPoint}
+              </span>
+              . Target was {TargetScore} pts
             </p>
 
             {/* Actions */}

@@ -114,11 +114,25 @@ function GameStatus({ gameMode, TargetScore, resetMatch }) {
         </span>
       </div>
 
-      {/* Reset Button */}
-      <button
-        data-action="reset-match"
-        onClick={resetMatch}
-        className="
+      <div
+        className="   w-full
+        sm:w-auto
+
+        flex flex-row
+        sm:flex-row
+
+        items-center
+        sm:items-center
+        max-sm:justify-between
+
+        gap-2
+        sm:gap-3 "
+      >
+        {/* Reset Button */}
+        <button
+          data-action="reset-match"
+          onClick={resetMatch}
+          className="
         w-full
         sm:w-auto
 
@@ -151,10 +165,45 @@ function GameStatus({ gameMode, TargetScore, resetMatch }) {
 
         active:scale-95
       "
-      >
-        <RotateCcw className="h-4 w-4" />
-        Reset
-      </button>
+        >
+          <RotateCcw className="h-4 w-4" />
+          Reset
+        </button>
+
+        {/* end match button  */}
+        <button
+          type="button"
+          className="
+              w-full
+              sm:w-auto
+
+              inline-flex items-center justify-center
+               gap-2
+
+              px-1 py-2
+
+              rounded-lg
+              text-sm font-semibold
+
+             bg-[#ff4d6d1f]
+              border border-[#ff4d6d40]
+              text-[#ff4d6d]
+
+              transform
+              transition-all
+              duration-200
+              ease-out
+
+              hover:bg-[#ff4d6d33]
+              hover:border-[#ff4d6d]
+              hover:shadow-[0_0_20px_rgba(255,77,109,0.25)]
+
+              active:scale-90
+            "
+        >
+          End Match
+        </button>
+      </div>
     </div>
   );
 }

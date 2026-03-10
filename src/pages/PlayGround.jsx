@@ -15,6 +15,8 @@ function PlayGround({ SetupData }) {
 
   if (!SetupData) return;
   const { gameMode, TargetScore } = SetupData;
+  console.log(SetupData);
+
   // reset match
   const resetMatch = () => {
     setPointCount((pre) => {
@@ -31,7 +33,13 @@ function PlayGround({ SetupData }) {
   let ground = null;
 
   if (id === "1-vs-1") {
-    ground = <SingleGround SetupData={SetupData} />;
+    ground = (
+      <SingleGround
+        SetupData={SetupData}
+        pointCount={pointCount}
+        setPointCount={setPointCount}
+      />
+    );
   } else {
     ground = (
       <DubbleGround
