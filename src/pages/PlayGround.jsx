@@ -12,10 +12,11 @@ function PlayGround({ SetupData }) {
     boardPoint: [],
     countBoard: 1,
   });
+  console.log(pointCount);
 
   if (!SetupData) return;
   const { gameMode, TargetScore } = SetupData;
-  console.log(SetupData);
+  // console.log(SetupData);
 
   // reset match
   const resetMatch = () => {

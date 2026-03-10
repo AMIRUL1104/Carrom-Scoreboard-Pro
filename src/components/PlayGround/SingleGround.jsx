@@ -13,19 +13,26 @@ function SingleGround({ SetupData, pointCount, setPointCount }) {
   const teamCardInfo = [
     {
       team: SetupData.playerOne,
-
       teamName: "TeamA",
       point: newPoint.pointA,
       totalPoint: Number(pointCount.TeamA),
     },
     {
       team: SetupData.playerTwo,
-
       teamName: "TeamB",
       point: newPoint.pointB,
       totalPoint: Number(pointCount.TeamB),
     },
   ];
+
+  function clearNewPoint() {
+    setNewPoint({
+      ...newPoint,
+      teamName: "",
+      pointA: 0,
+      pointB: 0,
+    });
+  }
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -46,6 +53,142 @@ function SingleGround({ SetupData, pointCount, setPointCount }) {
         };
       }
     });
+  };
+
+  const [matchHistory, setMatchHistory] = useState({
+    id: crypto.randomUUID(),
+    gameMode: SetupData.gameMode,
+    gameStart: SetupData.gameStart,
+    targetScore: TargetScore,
+    boardPoint: [],
+    countBoard: 0,
+    winner: {},
+    losser: {},
+  });
+
+  // const [matchHistory, setMatchHistory] = useState();
+  const setMatchData = (boardPoint, countBoard, winner, losser) => {
+    setMatchHistory((pre) => {
+      return {
+        ...pre,
+        boardPoint: boardPoint,
+        countBoard: countBoard,
+        winner: winner,
+        losser: losser,
+      };
+    });
+  };
+
+  const handleAddPoints = (e) => {
+    const btnName = e.target.name;
+    const teamName = newPoint.teamName;
+
+    if (btnName !== teamName) return;
+
+    const { TeamA, TeamB } = pointCount;
+
+    if (teamName === "TeamA") {
+      const value = newPoint.pointA;
+      if (value > 14 || value < 0) return;
+      const addPoint = Number(TeamA) + Number(value);
+
+      const teamInfo = teamCardInfo.find((team) => team.teamName === teamName);
+      const newBoard = {
+        id: crypto.randomUUID(),
+        teamName: teamName,
+        playerOne: teamInfo.team,
+        value: Number(value),
+        boardNO: pointCount.countBoard,
+        totalPoint: Number(teamInfo.totalPoint) + Number(value),
+      };
+      setPointCount((pre) => {
+        return {
+          ...pre,
+          [teamName]: addPoint,
+          boardPoint: [newBoard, ...pre.boardPoint],
+          countBoard: Number(pre.countBoard + 1),
+        };
+      });
+      if (addPoint >= TargetScore) {
+        const findWinner = teamCardInfo.find(
+          (team) => teamName === team.teamName,
+        );
+        const findLosser = teamCardInfo.find(
+          (team) => teamName !== team.teamName,
+        );
+
+        const winner = {
+          teamName: findWinner.teamName,
+          playerOne: findWinner.team,
+          totalPoint: Number(findWinner.totalPoint) + Number(value),
+        };
+        const losser = {
+          teamName: findLosser.teamName,
+          playerOne: findLosser.team,
+          totalPoint: findLosser.totalPoint,
+        };
+
+        // winningModal();
+        setMatchData(
+          [newBoard, ...pointCount.boardPoint],
+          pointCount.countBoard,
+          winner,
+          losser,
+        );
+      }
+      clearNewPoint();
+    } else {
+      const value = newPoint.pointB;
+      if (value > 14 || value < 0) return;
+      const addPoint = Number(TeamB) + Number(value);
+
+      const teamInfo = teamCardInfo.find((team) => team.teamName === teamName);
+      const newBoard = {
+        id: crypto.randomUUID(),
+        teamName: teamName,
+        playerOne: teamInfo.team,
+        value: Number(value),
+        boardNO: pointCount.countBoard,
+        totalPoint: Number(teamInfo.totalPoint) + Number(value),
+      };
+      setPointCount((pre) => {
+        return {
+          ...pre,
+          [teamName]: addPoint,
+          boardPoint: [newBoard, ...pre.boardPoint],
+          countBoard: Number(pre.countBoard + 1),
+        };
+      });
+      if (addPoint >= TargetScore) {
+        const findWinner = teamCardInfo.find(
+          (team) => teamName === team.teamName,
+        );
+
+        const findLosser = teamCardInfo.find(
+          (team) => teamName != team.teamName,
+        );
+
+        const winner = {
+          teamName: findWinner.teamName,
+          playerOne: findWinner.team,
+          totalPoint: Number(findWinner.totalPoint) + Number(value),
+        };
+        const losser = {
+          teamName: findLosser.teamName,
+          playerOne: findLosser.team,
+          totalPoint: findLosser.totalPoint,
+        };
+
+        // winningModal();
+        setMatchData(
+          [newBoard, ...pointCount.boardPoint],
+          pointCount.countBoard,
+          winner,
+          losser,
+        );
+      }
+      clearNewPoint();
+    }
   };
 
   return (
@@ -76,7 +219,7 @@ function SingleGround({ SetupData, pointCount, setPointCount }) {
         {/* TEAM CARD */}
         {teamCardInfo.map((team) => (
           <div
-            key={team.team}
+            key={team.teamName}
             className="
           w-full
           sm:flex-1
@@ -127,17 +270,16 @@ function SingleGround({ SetupData, pointCount, setPointCount }) {
             mb-2
           "
             >
-              20 {/* {team.totalPoint} */}
+              {team.totalPoint}
             </h1>
 
             <p className="text-xs text-[#4a5c70] mb-6">
               {/* Target: {Number(TargetScore)} ({" "} */}
-              Target : {TargetScore}
+              Target : {TargetScore} (
               <span className="text-[#00e5a0]">
-                (10%){" "}
-                {/* {Math.round((team.totalPoint * 100) / TargetScore)}% */}
+                {Math.round((team.totalPoint * 100) / TargetScore)}%
               </span>
-              {/* ) */}
+              )
             </p>
 
             {/* Controls */}
@@ -186,7 +328,7 @@ function SingleGround({ SetupData, pointCount, setPointCount }) {
               <input
                 type="number"
                 name={team.teamName}
-                id={team.team}
+                id={team.teamName}
                 value={team.point}
                 onChange={handleChange}
                 className="
@@ -216,7 +358,7 @@ function SingleGround({ SetupData, pointCount, setPointCount }) {
               <button
                 type="button"
                 name={team.teamName}
-                // onClick={handleAddPoints}
+                onClick={handleAddPoints}
                 className="
               w-full
               sm:w-auto
