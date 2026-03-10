@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import GameStatus from "../components/PlayGround/GameStatus";
 import DubbleGround from "../components/PlayGround/DubbleGround";
@@ -6,17 +6,16 @@ import SingleGround from "../components/PlayGround/SingleGround";
 
 function PlayGround({ SetupData }) {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [pointCount, setPointCount] = useState({
     TeamA: 0,
     TeamB: 0,
     boardPoint: [],
     countBoard: 1,
   });
-  console.log(pointCount);
 
   if (!SetupData) return;
   const { gameMode, TargetScore } = SetupData;
-  // console.log(SetupData);
 
   // reset match
   const resetMatch = () => {
@@ -31,6 +30,20 @@ function PlayGround({ SetupData }) {
     });
   };
 
+  // end match
+  const endMatch = () => {
+    setPointCount((pre) => {
+      return {
+        ...pre,
+        TeamA: 0,
+        TeamB: 0,
+        boardPoint: [],
+        countBoard: 1,
+      };
+    });
+
+    navigate("/");
+  };
   let ground = null;
 
   if (id === "1-vs-1") {
@@ -56,6 +69,7 @@ function PlayGround({ SetupData }) {
         gameMode={gameMode}
         TargetScore={TargetScore}
         resetMatch={resetMatch}
+        endMatch={endMatch}
       />
       {ground}
     </div>
