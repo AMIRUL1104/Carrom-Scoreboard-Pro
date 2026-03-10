@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { Trophy } from "lucide-react";
 
 function SingleGround({ SetupData, pointCount, setPointCount }) {
-  // console.log(SetupData);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const [newPoint, setNewPoint] = useState({
     teamName: "",
@@ -10,6 +12,7 @@ function SingleGround({ SetupData, pointCount, setPointCount }) {
   });
 
   const { TargetScore } = SetupData;
+
   const teamCardInfo = [
     {
       team: SetupData.playerOne,
@@ -66,7 +69,6 @@ function SingleGround({ SetupData, pointCount, setPointCount }) {
     losser: {},
   });
 
-  // const [matchHistory, setMatchHistory] = useState();
   const setMatchData = (boardPoint, countBoard, winner, losser) => {
     setMatchHistory((pre) => {
       return {
@@ -78,6 +80,31 @@ function SingleGround({ SetupData, pointCount, setPointCount }) {
       };
     });
   };
+
+  useEffect(() => {
+    if (matchHistory.countBoard > 1) {
+      const previousHistory =
+        JSON.parse(localStorage.getItem("historyData")) || [];
+      console.log(previousHistory);
+
+      const updatedHistory = [matchHistory, ...previousHistory];
+      localStorage.setItem("historyData", JSON.stringify(updatedHistory));
+    }
+
+    // remove locale data for work
+    // localStorage.setItem("historyData", JSON.stringify([]));
+  }, [matchHistory]);
+
+  const navigate = useNavigate();
+  // Close drawer and reset selected item
+  const closeDrawer = () => {
+    // navigate("/");-
+    setIsDrawerOpen(false);
+  };
+
+  function winningModal() {
+    setIsDrawerOpen(true);
+  }
 
   const handleAddPoints = (e) => {
     const btnName = e.target.name;
@@ -128,7 +155,7 @@ function SingleGround({ SetupData, pointCount, setPointCount }) {
           totalPoint: findLosser.totalPoint,
         };
 
-        // winningModal();
+        winningModal();
         setMatchData(
           [newBoard, ...pointCount.boardPoint],
           pointCount.countBoard,
@@ -179,7 +206,7 @@ function SingleGround({ SetupData, pointCount, setPointCount }) {
           totalPoint: findLosser.totalPoint,
         };
 
-        // winningModal();
+        winningModal();
         setMatchData(
           [newBoard, ...pointCount.boardPoint],
           pointCount.countBoard,
@@ -388,6 +415,233 @@ function SingleGround({ SetupData, pointCount, setPointCount }) {
           </div>
         ))}
       </div>
+
+      {/* Overlay */}
+      {isDrawerOpen && (
+        <div
+          onClick={() => {
+            navigate("/");
+            closeDrawer();
+          }}
+          className="
+            fixed inset-0 z-40
+      
+            bg-[#060810d9]
+            backdrop-blur-md
+      
+            transition-opacity
+            duration-300
+          "
+        />
+      )}
+
+      {/* Modal Wrapper */}
+      {isDrawerOpen && (
+        <div
+          className="
+            fixed inset-0 z-50
+      
+            flex items-center justify-center
+      
+            p-4
+      
+            pointer-events-none
+          "
+        >
+          <div
+            className="
+              w-full
+              max-w-md
+      
+              bg-[#111722]
+              border border-[rgba(0,229,160,0.25)]
+      
+              rounded-[28px]
+      
+              px-6 py-8
+              sm:px-10 sm:py-12
+      
+              text-center
+      
+              shadow-[0_0_20px_rgba(0,229,160,0.35),0_4px_24px_rgba(0,0,0,0.5)]
+      
+              relative overflow-hidden
+      
+              transform
+              transition-all
+              duration-300
+              ease-out
+      
+              scale-100 opacity-100
+      
+              pointer-events-auto
+            "
+          >
+            {/* Top Accent Line */}
+            <div
+              className="
+                absolute top-0 left-0 right-0
+                h-0.5
+                bg-linear-to-r
+                from-transparent
+                via-[#00e5a0]
+                to-transparent
+              "
+            />
+
+            {/* Trophy */}
+            <div
+              className="
+          flex justify-center
+      
+          text-[#ffd700]
+      
+          text-5xl
+          sm:text-6xl
+      
+          mb-4
+      
+          drop-shadow-[0_0_12px_rgba(255,215,0,0.45)]
+      
+          transform
+          transition-all
+          duration-500
+          ease-out
+        "
+            >
+              <Trophy />
+            </div>
+
+            {/* Pretitle */}
+            <p
+              className="
+                text-[11px]
+                tracking-[2px]
+                uppercase
+                font-semibold
+      
+                text-[#00e5a0]
+      
+                mb-2
+              "
+            >
+              MATCH WINNER
+            </p>
+
+            {/* Winner Name */}
+            <h2
+              className="
+                font-[Syne]
+                font-extrabold
+      
+                text-2xl
+                sm:text-3xl
+      
+                text-[#e8f0f8]
+                uppercase
+      
+                mb-2
+              "
+            >
+              {matchHistory.winner.playerOne}
+            </h2>
+            {/* <p className=" capitalize mb-3.5">
+                    {matchHistory.winner.playerOne} & {matchHistory.winner.playerTwo}
+                  </p> */}
+            {/* Score Info */}
+            <p
+              className="
+                text-sm
+                text-[#8a9bb0]
+      
+                mb-8
+              "
+            >
+              Final score:
+              <span className="ml-1 text-[#00e5a0] font-semibold">
+                {matchHistory.winner.totalPoint}
+              </span>
+              . Target was {TargetScore} pts
+            </p>
+
+            {/* Actions */}
+            <div
+              className="
+                flex flex-col
+                sm:flex-row
+      
+                gap-3
+              "
+            >
+              {/* View History */}
+              <button
+                onClick={() => {
+                  navigate("/history");
+                  closeDrawer();
+                }}
+                className="
+                  w-full
+                  sm:flex-1
+      
+                  px-4 py-2
+      
+                  rounded-[14px]
+      
+                  bg-[rgba(255,255,255,0.06)]
+                  border border-[#1e2836]
+      
+                  text-[#e8f0f8]
+                  font-semibold
+      
+                  transform
+                  transition-all
+                  duration-200
+                  ease-out
+      
+                  hover:bg-[rgba(255,255,255,0.1)]
+                  hover:border-[#2a3a50]
+      
+                  active:scale-95
+                "
+              >
+                View History
+              </button>
+
+              {/* New Match */}
+              <button
+                onClick={() => {
+                  navigate("/match-setup/1-vs-1");
+                  closeDrawer();
+                }}
+                className="
+                  w-full
+                  sm:flex-1
+      
+                  px-4 py-2
+      
+                  rounded-[14px]
+      
+                  bg-[#00e5a0]
+                  text-black
+                  font-semibold
+      
+                  transform
+                  transition-all
+                  duration-200
+                  ease-out
+      
+                  hover:shadow-[0_0_20px_rgba(0,229,160,0.35)]
+      
+                  active:scale-95
+                  active:translate-y-px
+                "
+              >
+                New Match
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

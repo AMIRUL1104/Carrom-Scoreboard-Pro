@@ -42,7 +42,6 @@ function DubbleGround({ SetupData, pointCount, setPointCount }) {
     losser: {},
   });
 
-  // const [matchHistory, setMatchHistory] = useState();
   const setMatchData = (boardPoint, countBoard, winner, losser) => {
     setMatchHistory((pre) => {
       return {
