@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Trophy } from "lucide-react";
 
@@ -10,6 +10,8 @@ function SingleGround({ SetupData, pointCount, setPointCount }) {
     pointA: 0,
     pointB: 0,
   });
+
+  const preBoardNo = useRef(0);
 
   const { TargetScore } = SetupData;
 
@@ -85,7 +87,7 @@ function SingleGround({ SetupData, pointCount, setPointCount }) {
     if (matchHistory.countBoard > 1) {
       const previousHistory =
         JSON.parse(localStorage.getItem("historyData")) || [];
-      console.log(previousHistory);
+      // console.log(previousHistory);
 
       const updatedHistory = [matchHistory, ...previousHistory];
       localStorage.setItem("historyData", JSON.stringify(updatedHistory));
@@ -136,6 +138,8 @@ function SingleGround({ SetupData, pointCount, setPointCount }) {
           countBoard: Number(pre.countBoard + 1),
         };
       });
+      preBoardNo.current = pointCount.countBoard;
+
       if (addPoint >= TargetScore) {
         const findWinner = teamCardInfo.find(
           (team) => teamName === team.teamName,
@@ -163,6 +167,7 @@ function SingleGround({ SetupData, pointCount, setPointCount }) {
           losser,
         );
       }
+
       clearNewPoint();
     } else {
       const value = newPoint.pointB;
@@ -186,6 +191,8 @@ function SingleGround({ SetupData, pointCount, setPointCount }) {
           countBoard: Number(pre.countBoard + 1),
         };
       });
+      preBoardNo.current = pointCount.countBoard;
+
       if (addPoint >= TargetScore) {
         const findWinner = teamCardInfo.find(
           (team) => teamName === team.teamName,
@@ -215,6 +222,54 @@ function SingleGround({ SetupData, pointCount, setPointCount }) {
         );
       }
       clearNewPoint();
+    }
+  };
+
+  const handleMinusPoint = (e) => {
+    const teamName = e.target.name;
+
+    const { TeamA, TeamB } = pointCount;
+
+    if (teamName === "TeamA") {
+      const value = -1;
+      const addPoint = Number(TeamA) + Number(value);
+
+      const teamInfo = teamCardInfo.find((team) => team.teamName === teamName);
+      const newBoard = {
+        id: crypto.randomUUID(),
+        teamName: teamName,
+        playerOne: teamInfo.team,
+        value: Number(value),
+        boardNO: preBoardNo.current,
+        totalPoint: Number(teamInfo.totalPoint) + Number(value),
+      };
+      setPointCount((pre) => {
+        return {
+          ...pre,
+          [teamName]: addPoint,
+          boardPoint: [newBoard, ...pre.boardPoint],
+        };
+      });
+    } else {
+      const value = -1;
+      const addPoint = Number(TeamB) + Number(value);
+
+      const teamInfo = teamCardInfo.find((team) => team.teamName === teamName);
+      const newBoard = {
+        id: crypto.randomUUID(),
+        teamName: teamName,
+        playerOne: teamInfo.team,
+        value: Number(value),
+        boardNO: preBoardNo.current,
+        totalPoint: Number(teamInfo.totalPoint) + Number(value),
+      };
+      setPointCount((pre) => {
+        return {
+          ...pre,
+          [teamName]: addPoint,
+          boardPoint: [newBoard, ...pre.boardPoint],
+        };
+      });
     }
   };
 
@@ -323,6 +378,8 @@ function SingleGround({ SetupData, pointCount, setPointCount }) {
               {/* -1 Button */}
               <button
                 type="button"
+                onClick={handleMinusPoint}
+                name={team.teamName}
                 className="
               w-full
               sm:w-auto

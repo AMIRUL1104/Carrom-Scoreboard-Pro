@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-function StartGame({ title }) {
+function StartGame({ title, actionText }) {
   return (
     <Link
       to={`/match-setup/${title.toLowerCase().replace(/\s/g, "-")}`} // e.g., /play/1-vs-1
@@ -13,7 +13,7 @@ function StartGame({ title }) {
              active:scale-[0.97]
              hover:bg-[#00f5ae] hover:shadow-[0_0_20px_rgba(0,229,160,0.35)] hover:-translate-y-1"
     >
-      Start Game
+      {actionText}
     </Link>
   );
 }

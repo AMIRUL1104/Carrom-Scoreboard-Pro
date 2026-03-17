@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import OneVsOneSetup from "../components/MatchSetup/OneVsOneSetup";
 import TwoVsTwoSetup from "../components/MatchSetup/TwoVsTwoSetup";
-import FreeStyleSetup from "../components/MatchSetup/FreeStyleSetup";
+import TournamentSetup from "../components/MatchSetup/TournamentSetup";
 import Header from "../components/Header/Header";
 function MatchSetup({ setSetupData }) {
   const { id } = useParams();
@@ -12,7 +12,7 @@ function MatchSetup({ setSetupData }) {
   } else if (id === "2-vs-2") {
     SetupComponent = <TwoVsTwoSetup setSetupData={setSetupData} />;
   } else {
-    SetupComponent = <FreeStyleSetup />;
+    SetupComponent = <TournamentSetup />;
   }
   return (
     <div>

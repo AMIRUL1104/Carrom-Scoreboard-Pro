@@ -1,11 +1,12 @@
 import StartGame from "../Button/StartGame";
+
 const gameModes = [
   {
     title: "1 vs 1",
     type: "Single Player",
     description: "Practice solo and beat your high score.",
     actionText: "Start Game →",
-    icon: "🔵", // striker/coin for solo play
+    icon: "🌀", // striker/coin for solo play
   },
   {
     title: "2 vs 2",
@@ -15,11 +16,11 @@ const gameModes = [
     icon: "👥", // two players for 2v2
   },
   {
-    title: "2 – 4 Players",
-    type: "Freestyle",
-    description: "Free-for-all fun with up to 4 players.",
-    actionText: "Start Game →",
-    icon: "🎯", // target for multiple strikes
+    title: "Tournament",
+    type: "Grand Championship",
+    description: "Compete and win the ultimate trophy.",
+    actionText: "Start Tournament →",
+    icon: "🏆", // Trophy icon tournament er jonno beshi bhalo dekhay
   },
 ];
 function Cards() {
@@ -64,7 +65,7 @@ function Cards() {
           </p>
 
           {/* Button   /match-setup/:id */}
-          <StartGame title={mode.title} />
+          <StartGame title={mode.title} actionText={mode.actionText} />
         </div>
       ))}
     </section>

@@ -3,6 +3,7 @@ import { useState } from "react";
 import GameStatus from "../components/PlayGround/GameStatus";
 import DubbleGround from "../components/PlayGround/DubbleGround";
 import SingleGround from "../components/PlayGround/SingleGround";
+// import Tournament from "../components/PlayGround/Tournament";
 
 function PlayGround({ SetupData }) {
   const { id } = useParams();
