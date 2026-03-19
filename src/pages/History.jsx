@@ -1,4 +1,5 @@
 import Header from "../components/Header/Header";
+import HistoryCards from "../components/History/HistoryCards";
 import HistoryTopBar from "../components/History/HistoryTopBar";
 // import { Link } from "react-router-dom";
 // import { ArrowLeft } from "lucide-react";
@@ -18,6 +19,7 @@ function History() {
       </Link> */}
 
       <HistoryTopBar />
+      <HistoryCards />
     </div>
   );
 }
