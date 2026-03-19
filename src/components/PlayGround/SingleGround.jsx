@@ -235,6 +235,8 @@ function SingleGround({ SetupData, pointCount, setPointCount }) {
       const addPoint = Number(TeamA) + Number(value);
 
       const teamInfo = teamCardInfo.find((team) => team.teamName === teamName);
+      // if (teamInfo.totalPoint === 0) return;
+
       const newBoard = {
         id: crypto.randomUUID(),
         teamName: teamName,
@@ -255,6 +257,8 @@ function SingleGround({ SetupData, pointCount, setPointCount }) {
       const addPoint = Number(TeamB) + Number(value);
 
       const teamInfo = teamCardInfo.find((team) => team.teamName === teamName);
+      // if (teamInfo.totalPoint === 1) return;
+
       const newBoard = {
         id: crypto.randomUUID(),
         teamName: teamName,

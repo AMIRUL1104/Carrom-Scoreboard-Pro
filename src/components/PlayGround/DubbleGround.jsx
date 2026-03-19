@@ -12,7 +12,6 @@ function DubbleGround({ SetupData, pointCount, setPointCount }) {
   });
 
   const preBoardNo = useRef(0);
-  console.log(preBoardNo.current);
 
   const { TargetScore } = SetupData;
   const teamCardInfo = [
