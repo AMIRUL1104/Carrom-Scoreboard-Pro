@@ -2,17 +2,15 @@ import icon from "../../assets/calendar.png";
 import trash from "../../assets/trash-2.png";
 import trophy from "../../assets/trophy.png";
 import timer from "../../assets/timer.png";
-import { Trophy } from "lucide-react";
+import BoardDetails from "../ReusableCom/BoardDetails";
 
-function MatchCard({ match }) {
-  // console.log(match);
-  const { id, gameMode, gameStart, targetScore, boardPoint, losser, winner } =
-    match;
-  // console.log(id, gameStart, gameMode, targetScore, losser, winner, boardPoint);
+function MatchCard({ match, openModal }) {
+  const { id, gameMode, gameStart, targetScore, losser, winner } = match;
 
   return (
     <div
       id={id}
+      onClick={openModal}
       className=" mx-2.5 relative z-10 bg-[#111722] border border-[#1e2836] rounded-[28px] max-sm:rounded-2xl  shadow-[0_4px_24px_rgba(0,0,0,0.5)] overflow-hidden "
     >
       {/* Top Glow Effect  */}
@@ -91,38 +89,11 @@ function MatchCard({ match }) {
       </div>
 
       {/* ===== Part 2 ===== */}
-      <div className="p-5 relative z-10 hidden">
+      {/* <div className="p-5 relative z-10 hidden">
         <h3 className="text-sm font-semibold text-[#00e5a0] uppercase tracking-wide mb-4">
           Score History
         </h3>
-
-        <div className="w-full overflow-auto bg-[#0d1117] border border-[#1e2836] rounded-2xl">
-          <table className="w-full min-w-100 text-sm text-[#e8f0f8]">
-            <thead className="bg-[#060810] sticky top-0">
-              <tr>
-                <th className="py-3 text-center text-[#8a9bb0]">No</th>
-                <th className="py-3 text-center text-[#8a9bb0]">Team</th>
-                <th className="py-3 text-center text-[#8a9bb0]">Score</th>
-                <th className="py-3 text-center text-[#8a9bb0]">Point</th>
-              </tr>
-            </thead>
-
-            <tbody className="divide-y divide-[#1e2836]">
-              <tr className="hover:bg-[#060810] transition">
-                <td className="py-3 text-center">1</td>
-
-                <td className="py-3 text-center text-[#00e5a0] font-semibold capitalize">
-                  jomir + amirul
-                </td>
-
-                <td className="py-3 text-center">5</td>
-
-                <td className="py-3 text-center text-[#8a9bb0]">20</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+      </div> */}
     </div>
   );
 }
@@ -250,3 +221,30 @@ export default MatchCard;
 //     </div>
 //   );
 // }
+
+// <div className="w-full overflow-auto bg-[#0d1117] border border-[#1e2836] rounded-2xl">
+//   <table className="w-full min-w-100 text-sm text-[#e8f0f8]">
+//     <thead className="bg-[#060810] sticky top-0">
+//       <tr>
+//         <th className="py-3 text-center text-[#8a9bb0]">No</th>
+//         <th className="py-3 text-center text-[#8a9bb0]">Team</th>
+//         <th className="py-3 text-center text-[#8a9bb0]">Score</th>
+//         <th className="py-3 text-center text-[#8a9bb0]">Point</th>
+//       </tr>
+//     </thead>
+
+//     <tbody className="divide-y divide-[#1e2836]">
+//       <tr className="hover:bg-[#060810] transition">
+//         <td className="py-3 text-center">1</td>
+
+//         <td className="py-3 text-center text-[#00e5a0] font-semibold capitalize">
+//           jomir + amirul
+//         </td>
+
+//         <td className="py-3 text-center">5</td>
+
+//         <td className="py-3 text-center text-[#8a9bb0]">20</td>
+//       </tr>
+//     </tbody>
+//   </table>
+// </div>
