@@ -1,6 +1,6 @@
 import ClearHistory from "../Button/ClearHistory";
 
-function HistoryTopBar() {
+function HistoryTopBar({ totalMatch }) {
   return (
     <div className="mt-16 max-w-7xl px-1 md:px-10 mx-auto ">
       <div className="w-full flex items-start justify-between flex-col   ">
@@ -9,7 +9,7 @@ function HistoryTopBar() {
         </h1>
         <div className=" w-full flex items-stretch justify-between max-sm:mt-4">
           <p className=" text-[14px] text-[#8a9bb0] block ">
-            0 recorded matches
+            {totalMatch ? `${totalMatch} recorded matches` : `0 recorded match`}
           </p>
           <ClearHistory />
         </div>
