@@ -1,6 +1,6 @@
 import ClearHistory from "../Button/ClearHistory";
 
-function HistoryTopBar({ totalMatch }) {
+function HistoryTopBar({ totalMatch, handleDeleteDrawer }) {
   return (
     <div className="mt-16 max-w-7xl px-1 md:px-10 mx-auto ">
       <div className="w-full flex items-start justify-between flex-col   ">
@@ -11,7 +11,7 @@ function HistoryTopBar({ totalMatch }) {
           <p className=" text-[14px] text-[#8a9bb0] block ">
             {totalMatch ? `${totalMatch} recorded matches` : `0 recorded match`}
           </p>
-          <ClearHistory />
+          <ClearHistory handleDeleteDrawer={handleDeleteDrawer} />
         </div>
       </div>
     </div>

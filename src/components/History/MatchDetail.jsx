@@ -46,7 +46,7 @@ function MatchDetail({ details, closeModal }) {
         </div>
 
         {/* ===== Part 1 ===== */}
-        <div className="p-1 sm:p-5 mb-2 border-b border-[#1e2836] relative z-10">
+        <div className="p-1  mb-2 border-b border-[#1e2836] relative z-10">
           {/* Layer 1 */}
           <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
             <div className="flex flex-wrap items-center gap-2 text-[10px] sm:text-xs text-[#8a9bb0]">

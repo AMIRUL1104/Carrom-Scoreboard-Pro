@@ -1,6 +1,7 @@
-function ClearHistory() {
+function ClearHistory({ handleDeleteDrawer }) {
   return (
     <button
+      onClick={handleDeleteDrawer}
       className="
               sm:w-auto
 
