@@ -4,77 +4,87 @@ function GameStatus({ gameMode, TargetScore, resetMatch, endMatch }) {
   return (
     <div
       className="
-      w-full
-
-      bg-[#0d1117e6]
-      backdrop-blur-md
-
-      border-b border-[#1e2836]
-
-      px-4 py-3
-      sm:px-6 sm:py-3.5
-
-      flex flex-col
-      sm:flex-row
-
-      items-start
-      sm:items-center
-
-      justify-between
-
-      gap-3
-      sm:gap-4
-    "
-    >
-      {/* Left Section */}
-      <div
-        className="
+        /* ===== Layout ===== */
         w-full
-        sm:w-auto
 
-        flex flex-row
+        flex flex-col
         sm:flex-row
 
-        items-center
+        items-start
         sm:items-center
-        max-sm:justify-between
 
-        gap-2
-        sm:gap-3
+        justify-between
+
+        gap-3
+        sm:gap-4
+
+        /* ===== Spacing ===== */
+        px-4 py-3
+        sm:px-6 sm:py-3.5
+
+        /* ===== UI / Visual ===== */
+        bg-[#0d1117e6]
+        backdrop-blur-md
+
+        border-b border-[#1e2836]
       "
+    >
+      {/* =========================
+          LEFT SECTION
+          (Game Info)
+      ========================== */}
+      <div
+        className="
+          /* Layout */
+          w-full
+          sm:w-auto
+
+          flex flex-row
+          items-center
+
+          max-sm:justify-between
+
+          gap-2
+          sm:gap-3
+        "
       >
         {/* Game Mode Badge */}
         <span
           className="
-          inline-flex items-center
+            /* Layout */
+            inline-flex items-center
 
-          bg-[#00e5a01f]
-          border border-[rgba(0,229,160,0.2)]
+            /* Spacing */
+            px-3 py-1
 
-          rounded-lg
+            /* Typography */
+            text-[11px]
+            sm:text-xs
+            font-semibold
+            tracking-wide
+            uppercase
 
-          px-3 py-1
+            /* UI */
+            rounded-lg
 
-          text-[11px]
-          sm:text-xs
-
-          font-semibold
-          tracking-wide
-          uppercase
-
-          text-[#00e5a0]
-        "
+            bg-[#00e5a01f]
+            border border-[rgba(0,229,160,0.2)]
+            text-[#00e5a0]
+          "
         >
           <Trophy className="mr-1 h-3.5 w-3.5" />
           {gameMode}
         </span>
 
-        {/* Target Info */}
+        {/* Target Score Info */}
         <span
           className="
-          text-sm
-          text-[#8a9bb0]
-        "
+            /* Typography */
+            text-sm
+
+            /* Color */
+            text-[#8a9bb0]
+          "
         >
           Target:
           <span className="ml-1 text-[#e8f0f8] font-semibold">
@@ -83,93 +93,109 @@ function GameStatus({ gameMode, TargetScore, resetMatch, endMatch }) {
         </span>
       </div>
 
+      {/* =========================
+          RIGHT SECTION
+          (Actions)
+      ========================== */}
       <div
-        className="   w-full
-        sm:w-auto
+        className="
+          /* Layout */
+          w-full
+          sm:w-auto
 
-        flex flex-row
-        sm:flex-row
+          flex flex-row
+          items-center
 
-        items-center
-        sm:items-center
-        max-sm:justify-between
+          max-sm:justify-between
 
-        gap-2
-        sm:gap-3 "
+          gap-2
+          sm:gap-3
+        "
       >
         {/* Reset Button */}
         <button
           data-action="reset-match"
           onClick={resetMatch}
           className="
-        w-full
-        sm:w-auto
+            /* Layout */
+            w-full
+            sm:w-auto
 
-        inline-flex items-center justify-center
-        gap-2
+            inline-flex items-center justify-center
+            gap-2
 
-        px-4 py-2
+            /* Spacing */
+            px-4 py-2
 
-        rounded-lg
+            /* Typography */
+            text-sm
+            font-semibold
 
-        bg-[rgba(255,255,255,0.06)]
-        text-[#e8f0f8]
+            /* UI */
+            rounded-lg
 
-        border border-[#1e2836]
+            bg-[rgba(255,255,255,0.06)]
+            text-[#e8f0f8]
+            border border-[#1e2836]
 
-        text-sm
-        font-semibold
+            /* Animation */
+            transform
+            transition-all
+            duration-200
+            ease-out
 
-        transform
-        transition-all
-        duration-200
-        ease-out
+            hover:bg-[rgba(255,255,255,0.1)]
+            hover:border-[#2a3a50]
 
-        hover:bg-[rgba(255,255,255,0.1)]
-        hover:border-[#2a3a50]
+            focus-visible:outline-2
+            focus-visible:outline-[#00e5a0]
+            focus-visible:outline-offset-2
 
-        focus-visible:outline-2
-        focus-visible:outline-[#00e5a0]
-        focus-visible:outline-offset-2
-
-        active:scale-95
-      "
+            active:scale-95
+          "
         >
           <RotateCcw className="h-4 w-4" />
           Reset
         </button>
 
-        {/* end match button  */}
+        {/* End Match Button */}
         <button
           type="button"
           onClick={endMatch}
           className="
-              w-full
-              sm:w-auto
+            /* Layout */
+            w-full
+            sm:w-auto
 
-              inline-flex items-center justify-center
-               gap-2
+            inline-flex items-center justify-center
+            gap-2
 
-              px-1 py-2
+            /* Spacing */
+            px-1 py-2
 
-              rounded-lg
-              text-sm font-semibold
+            /* Typography */
+            text-sm
+            font-semibold
 
-             bg-[#ff4d6d1f]
-              border border-[#ff4d6d40]
-              text-[#ff4d6d]
+            /* UI */
+            rounded-lg
 
-              transform
-              transition-all
-              duration-200
-              ease-out
+            bg-[#ff4d6d1f]
+            border border-[#ff4d6d40]
+            text-[#ff4d6d]
 
-              hover:bg-[#ff4d6d33]
-              hover:border-[#ff4d6d]
-              hover:shadow-[0_0_20px_rgba(255,77,109,0.25)]
+            /* Animation */
+            transform
+            transition-all
+            duration-200
+            ease-out
 
-              active:scale-90
-            "
+            hover:bg-[#ff4d6d33]
+            hover:border-[#ff4d6d]
+            hover:shadow-[0_0_20px_rgba(255,77,109,0.25)]
+
+            active:scale-90
+          "
         >
           End Match
         </button>

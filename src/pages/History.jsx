@@ -142,6 +142,7 @@ function History() {
             >
               {/* No Button */}
               <button
+                onClick={closeModal}
                 type="button"
                 className="
         w-full sm:w-auto
