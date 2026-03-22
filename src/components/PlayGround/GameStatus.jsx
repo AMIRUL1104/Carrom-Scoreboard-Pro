@@ -1,4 +1,5 @@
 import { RotateCcw, Trophy } from "lucide-react";
+import UndoRedo from "./UndoRedo";
 
 function GameStatus({ gameMode, TargetScore, resetMatch, endMatch }) {
   return (
@@ -112,6 +113,9 @@ function GameStatus({ gameMode, TargetScore, resetMatch, endMatch }) {
           sm:gap-3
         "
       >
+        {/* Undo and Redo  Button */}
+        <UndoRedo />
+
         {/* Reset Button */}
         <button
           data-action="reset-match"

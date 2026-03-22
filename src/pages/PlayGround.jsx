@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import GameStatus from "../components/PlayGround/GameStatus";
 import DubbleGround from "../components/PlayGround/DubbleGround";
 import SingleGround from "../components/PlayGround/SingleGround";
@@ -14,6 +14,20 @@ function PlayGround({ SetupData }) {
     boardPoint: [],
     countBoard: 1,
   });
+
+  // useRef ব্যবহার করে ডেটা স্টোর করা
+  const allBoardInfoRef = useRef([]);
+  const isFirstRender = useRef(true); // এটি প্রথমবার true থাকবে
+
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+
+    allBoardInfoRef.current.unshift(pointCount);
+    console.log("Updated Data:", allBoardInfoRef.current);
+  }, [pointCount]);
 
   if (!SetupData) return;
   const { gameMode, TargetScore } = SetupData;
