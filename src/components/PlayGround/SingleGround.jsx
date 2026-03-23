@@ -8,7 +8,12 @@ import { Trophy } from "lucide-react";
 // ======================
 // 🧠 COMPONENT
 // ======================
-function SingleGround({ SetupData, pointCount, setPointCount }) {
+function SingleGround({
+  SetupData,
+  pointCount,
+  setPointCount,
+  allBoardInfoRef,
+}) {
   // ======================
   // 📊 BASIC SETUP
   // ======================
@@ -119,6 +124,7 @@ function SingleGround({ SetupData, pointCount, setPointCount }) {
     if (value > 14 || value < 0) return;
 
     const teamInfo = teamCardInfo.find((t) => t.teamName === teamName);
+
     const addPoint = Number(pointCount[teamName]) + Number(value);
 
     // 🧾 Board Entry
@@ -131,13 +137,16 @@ function SingleGround({ SetupData, pointCount, setPointCount }) {
       totalPoint: teamInfo.totalPoint + Number(value),
     };
 
-    // 📊 Update Score
-    setPointCount((pre) => ({
-      ...pre,
+    const newBoardPoint = {
+      ...pointCount,
       [teamName]: addPoint,
-      boardPoint: [newBoard, ...pre.boardPoint],
-      countBoard: pre.countBoard + 1,
-    }));
+      boardPoint: [newBoard, ...pointCount.boardPoint],
+      countBoard: pointCount.countBoard + 1,
+    };
+    // 📊 Update Score
+    setPointCount(newBoardPoint);
+    allBoardInfoRef.current.unshift(newBoardPoint);
+    console.log(allBoardInfoRef.current);
 
     preBoardNo.current = pointCount.countBoard;
 

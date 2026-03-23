@@ -1,7 +1,13 @@
 import { RotateCcw, Trophy } from "lucide-react";
 import UndoRedo from "./UndoRedo";
 
-function GameStatus({ gameMode, TargetScore, resetMatch, endMatch }) {
+function GameStatus({
+  gameMode,
+  TargetScore,
+  resetMatch,
+  endMatch,
+  undoRedoFunction,
+}) {
   return (
     <div
       className="
@@ -114,7 +120,7 @@ function GameStatus({ gameMode, TargetScore, resetMatch, endMatch }) {
         "
       >
         {/* Undo and Redo  Button */}
-        <UndoRedo />
+        <UndoRedo undoRedoFunction={undoRedoFunction} />
 
         {/* Reset Button */}
         <button

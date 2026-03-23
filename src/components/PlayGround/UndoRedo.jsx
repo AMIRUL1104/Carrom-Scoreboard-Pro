@@ -1,6 +1,6 @@
 import undo from "../../assets/undo-2.svg";
 import redo from "../../assets/redo-2.svg";
-function UndoRedo() {
+function UndoRedo({ undoRedoFunction }) {
   return (
     <div
       className="
@@ -18,6 +18,10 @@ function UndoRedo() {
     >
       {/* Undo Button */}
       <button
+        onClick={undoRedoFunction}
+        name="undo"
+        title="Undo"
+        type="button"
         className="
             /* Layout */
             w-full
@@ -31,13 +35,15 @@ function UndoRedo() {
 
             /* Typography */
             text-sm
-            font-semibold
+            font-semibold 
 
             /* UI */
             rounded-lg
 
             hover:bg-[#ffffff1a]
             text-[#e8f0f8]
+
+            disabled:opacity-60 disabled:hover:bg-transparent
 
             /* Animation */
             transform
@@ -57,6 +63,9 @@ function UndoRedo() {
 
       {/* Redo Button */}
       <button
+        onClick={undoRedoFunction}
+        name="redo"
+        title="Redo"
         type="button"
         className="
             /* Layout */
@@ -78,6 +87,8 @@ function UndoRedo() {
 
             hover:bg-[#ffffff1a]
             text-[#e8f0f8]
+
+            disabled:opacity-60 disabled:hover:bg-transparent
 
             /* Animation */
             transform
