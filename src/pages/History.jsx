@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Header from "../components/Header/Header";
 import HistoryCards from "../components/History/HistoryCards";
 import HistoryTopBar from "../components/History/HistoryTopBar";
@@ -9,8 +9,7 @@ function History() {
   const [isDeleteDrawerOpen, setDeleteDrawerOpen] = useState(false);
 
   const [details, setDetails] = useState(null);
-
-  const [allMatch, setAllMatch] = useState(() => {
+  const storedDataa = () => {
     try {
       const savedData = localStorage.getItem("historyData");
       // যদি ডাটা থাকে তবে পার্স করো, নাহলে খালি অ্যারে দাও
@@ -19,8 +18,52 @@ function History() {
       console.error(error);
       return [];
     }
-  });
-  // const allMatch = JSON.parse(localStorage.getItem("historyData"));
+  };
+  const allMatchRefs = useRef(storedDataa());
+  const sortedDataRefs = useRef(storedDataa());
+
+  const [allMatch, setAllMatch] = useState(storedDataa());
+
+  const handleSortFilter = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    const all = allMatchRefs.current;
+
+    if (name.toLowerCase() === "filter") {
+      const sortedData = [...sortedDataRefs.current];
+      if (value.toLowerCase() === "all") {
+        return setAllMatch(all);
+      }
+      const filterd = sortedData.filter((match) => match.gameMode === value);
+      setAllMatch(filterd);
+    } else {
+      if (value.toLowerCase() === "highest score") {
+        const sorted = [...all].sort(
+          (a, b) => b.winner.totalPoint - a.winner.totalPoint,
+        );
+        sortedDataRefs.current = sorted;
+        return setAllMatch(sorted);
+      } else if (value.toLowerCase() === "lowest score") {
+        const sorted = [...all].sort(
+          (a, b) => a.winner.totalPoint - b.winner.totalPoint,
+        );
+        sortedDataRefs.current = sorted;
+        return setAllMatch(sorted);
+      } else if (value.toLowerCase() === "oldest") {
+        const sorted = [...all].sort(
+          (a, b) => new Date(a.gameStart) - new Date(b.gameStart),
+        );
+        sortedDataRefs.current = sorted;
+        return setAllMatch(sorted);
+      } else {
+        const sorted = [...all].sort(
+          (a, b) => new Date(b.gameStart) - new Date(a.gameStart),
+        );
+        sortedDataRefs.current = sorted;
+        return setAllMatch(sorted);
+      }
+    }
+  };
 
   const openModal = (e) => {
     setModalOpen((pre) => !pre);
@@ -58,6 +101,7 @@ function History() {
       <HistoryTopBar
         totalMatch={allMatch.length}
         handleDeleteDrawer={handleDeleteDrawer}
+        handleSortFilter={handleSortFilter}
       />
       <HistoryCards
         allMatch={allMatch}

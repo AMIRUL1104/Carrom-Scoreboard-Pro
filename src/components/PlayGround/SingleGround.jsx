@@ -146,7 +146,6 @@ function SingleGround({
     // 📊 Update Score
     setPointCount(newBoardPoint);
     allBoardInfoRef.current.unshift(newBoardPoint);
-    console.log(allBoardInfoRef.current);
 
     preBoardNo.current = pointCount.countBoard;
 
