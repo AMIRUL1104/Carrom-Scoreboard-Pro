@@ -1,7 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Header from "../components/Header/Header";
 // Replace these with your real data props or API calls
-
 // ------ Real data -----------
 // ----------------------------
 
@@ -59,6 +58,68 @@ all_Players_Name.forEach((element) => {
     matches: [...playMatch],
   });
 });
+
+// {
+//     "id": "e57c6a8b-8793-4010-be71-01c992c0af20",
+//     "gameMode": "Single Player",
+//     "gameStart": "2026-03-22T12:06:46.689Z",
+//     "targetScore": 29,
+//     "boardPoint": [
+//         {
+//             "id": "e87c561a-a539-4681-9a0b-3e21bdc74a93",
+//             "teamName": "TeamA",
+//             "playerOne": "amirul",
+//             "value": 8,
+//             "boardNO": 5,
+//             "totalPoint": 29
+//         },
+//         {
+//             "id": "a9357e07-58a6-4bb9-a7f6-a7459275fb83",
+//             "teamName": "TeamA",
+//             "playerOne": "amirul",
+//             "value": 10,
+//             "boardNO": 4,
+//             "totalPoint": 21
+//         },
+//         {
+//             "id": "586618e0-24e9-493e-932d-4b0b283f5879",
+//             "teamName": "TeamA",
+//             "playerOne": "amirul",
+//             "value": 4,
+//             "boardNO": 3,
+//             "totalPoint": 11
+//         },
+//         {
+//             "id": "c8cc5036-d29f-4189-92d2-03d232da00de",
+//             "teamName": "TeamB",
+//             "playerOne": "jomir",
+//             "value": 7,
+//             "boardNO": 2,
+//             "totalPoint": 7
+//         },
+//         {
+//             "id": "878653f5-22d4-439e-a4de-399af66afecf",
+//             "teamName": "TeamA",
+//             "playerOne": "amirul",
+//             "value": 7,
+//             "boardNO": 1,
+//             "totalPoint": 7
+//         }
+//     ],
+//     "countBoard": 5,
+//     "winner": {
+//         "teamName": "TeamA",
+//         "playerOne": "amirul",
+//         "totalPoint": 29
+//     },
+//     "losser": {
+//         "teamName": "TeamB",
+//         "playerOne": "jomir",
+//         "totalPoint": 7
+//     }
+// }
+
+// console.log(player_info);
 
 // ─── Mock Data ────────────────────────────────────────────────────────────────
 
@@ -356,6 +417,62 @@ export default function StatsDashboard() {
   const [sortDir, setSortDir] = useState("desc");
   const [isLoading, setIsLoading] = useState(true);
   const [hasData] = useState(true); // set false to preview empty state
+  //
+
+  // all player details information
+  const [player_info] = useState(() => {
+    const playerInfo = playersMatch.map((player) => {
+      let notePlayerinfo = {
+        name: player.playerName,
+        matches: player.matches.length,
+      };
+
+      let wins = 0;
+      let losses = 0;
+      let totalPoint = 0;
+      player.matches.forEach((match) => {
+        if (
+          match.winner?.playerOne === player.playerName ||
+          match.winner?.playerTwo === player.playerName
+        ) {
+          wins = wins + 1;
+          totalPoint = totalPoint + match.winner.totalPoint;
+        } else {
+          losses++;
+          totalPoint = totalPoint + match.losser.totalPoint;
+        }
+
+        notePlayerinfo = {
+          ...notePlayerinfo,
+          wins,
+          losses,
+          winPct: Math.round((wins / player.matches.length) * 100),
+          avgScore: (totalPoint / player.matches.length).toFixed(1),
+        };
+      });
+      return notePlayerinfo;
+    });
+    return playerInfo;
+  });
+
+  //========= computed data =======
+  // ==============================
+  // -------closest match----------
+  let diffRefs = useRef(100);
+  let closestMatch;
+
+  allData.forEach((match) => {
+    let calcPoint = match.winner.totalPoint - match.losser.totalPoint;
+    if (calcPoint < diffRefs.current) {
+      diffRefs.current = calcPoint;
+      closestMatch = match;
+    } else if (calcPoint === diffRefs.current) {
+      if (closestMatch?.countBoard >= match.countBoard) return;
+      diffRefs.current = calcPoint;
+      closestMatch = match;
+    }
+  });
+  console.log(closestMatch);
 
   // Simulate loading
   useEffect(() => {
@@ -365,13 +482,14 @@ export default function StatsDashboard() {
 
   // Filter options
   const timeFilters = ["All Time", "Today", "This Week"];
-  const playerNames = ["All Players", ...MOCK_PLAYERS.map((p) => p.name)];
+  const playerNames = ["All Players", ...player_info.map((p) => p.name)];
 
   // ── Computed stats ─────────────────────────────────────────────────────────
-  const players = MOCK_PLAYERS.map((p) => ({
+  const players = player_info.map((p) => ({
     ...p,
     winPct: Math.round((p.wins / p.matches) * 100),
   }));
+  console.log(player_info);
 
   // const totalMatches = players.reduce((s, p) => s + p.matches, 0) / 2; // each match has 2 players
   const bestPlayer = [...players].sort((a, b) => b.winPct - a.winPct)[0];
@@ -634,7 +752,7 @@ export default function StatsDashboard() {
                                   <WinBar percent={p.winPct} />
                                 </td>
                                 <td className="px-5 py-4 text-[13px] text-[#8a9bb0] tabular-nums">
-                                  {p.avgScore.toFixed(1)}
+                                  {p.avgScore}
                                 </td>
                               </tr>
                             );
