@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Header from "../components/Header/Header";
 // Replace these with your real data props or API calls
 // ------ Real data -----------
@@ -457,22 +457,59 @@ export default function StatsDashboard() {
 
   //========= computed data =======
   // ==============================
-  // -------closest match----------
-  let diffRefs = useRef(100);
-  let closestMatch;
+
+  // ইনিশিয়াল ভ্যালু সেট করা
+  let closestMatch = null;
+  let bigDiffMatch = null;
+  let shortestMatch = null;
+  let longestMatch = null;
+
+  let minDiff = Infinity;
+  let maxDiff = -1;
+  let minBoards = Infinity;
+  let maxBoards = -1;
 
   allData.forEach((match) => {
-    let calcPoint = match.winner.totalPoint - match.losser.totalPoint;
-    if (calcPoint < diffRefs.current) {
-      diffRefs.current = calcPoint;
+    const diff = match.winner.totalPoint - match.losser.totalPoint;
+    const boards = match.countBoard;
+
+    // ১. Closest Match (পয়েন্টের ব্যবধান সবচেয়ে কম)
+    if (diff < minDiff) {
+      minDiff = diff;
       closestMatch = match;
-    } else if (calcPoint === diffRefs.current) {
-      if (closestMatch?.countBoard >= match.countBoard) return;
-      diffRefs.current = calcPoint;
-      closestMatch = match;
+    } else if (diff === minDiff) {
+      // ব্যবধান সমান হলে যেটিতে বোর্ড বেশি সেটি নিচ্ছি
+      if (boards > (closestMatch?.countBoard || 0)) closestMatch = match;
+    }
+
+    // ২. Big Difference Match (পয়েন্টের ব্যবধান সবচেয়ে বেশি)
+    if (diff > maxDiff) {
+      maxDiff = diff;
+      bigDiffMatch = match;
+    } else if (diff === maxDiff) {
+      if (boards > (bigDiffMatch?.countBoard || 0)) bigDiffMatch = match;
+    }
+
+    // ৩. Shortest Match (সবচেয়ে কম বোর্ডে শেষ হয়েছে)
+    if (boards < minBoards) {
+      minBoards = boards;
+      shortestMatch = match;
+    }
+
+    // ৪. Longest Match (সবচেয়ে বেশি বোর্ডে শেষ হয়েছে)
+    if (boards > maxBoards) {
+      maxBoards = boards;
+      longestMatch = match;
     }
   });
-  console.log(closestMatch);
+
+  const highlights = {
+    closestMatch: { closestMatch },
+    bigDiffMatch: { bigDiffMatch },
+    shortestMatch: { shortestMatch },
+    longestMatch: { longestMatch },
+  };
+  console.log({ closestMatch, bigDiffMatch, shortestMatch, longestMatch });
 
   // Simulate loading
   useEffect(() => {
@@ -489,7 +526,7 @@ export default function StatsDashboard() {
     ...p,
     winPct: Math.round((p.wins / p.matches) * 100),
   }));
-  console.log(player_info);
+  // console.log(player_info);
 
   // const totalMatches = players.reduce((s, p) => s + p.matches, 0) / 2; // each match has 2 players
   const bestPlayer = [...players].sort((a, b) => b.winPct - a.winPct)[0];
