@@ -123,7 +123,8 @@ function SingleGround({
 
     if (value > 14 || value < 0) return;
 
-    const teamInfo = teamCardInfo.find((t) => t.teamName === teamName);
+    const winnerTeamInfo = teamCardInfo.find((t) => t.teamName === teamName);
+    const losserTeamInfo = teamCardInfo.find((t) => t.teamName !== teamName);
 
     const addPoint = Number(pointCount[teamName]) + Number(value);
 
@@ -131,10 +132,10 @@ function SingleGround({
     const newBoard = {
       id: crypto.randomUUID(),
       teamName,
-      playerOne: teamInfo.team,
+      playerOne: winnerTeamInfo.team,
       value: Number(value),
       boardNO: pointCount.countBoard,
-      totalPoint: teamInfo.totalPoint + Number(value),
+      totalPoint: winnerTeamInfo.totalPoint + Number(value),
     };
 
     const newBoardPoint = {
@@ -152,13 +153,16 @@ function SingleGround({
     // 🏆 Winner Check
     if (addPoint >= TargetScore) {
       const winner = {
-        teamName: teamInfo.teamName,
-        playerOne: teamInfo.team,
-        totalPoint: teamInfo.totalPoint + Number(value),
+        teamName: winnerTeamInfo.teamName,
+        playerOne: winnerTeamInfo.team,
+        totalPoint: winnerTeamInfo.totalPoint + Number(value),
       };
 
-      const losser = teamCardInfo.find((t) => t.teamName !== teamName);
-
+      const losser = {
+        teamName: losserTeamInfo.teamName,
+        playerOne: losserTeamInfo.team,
+        totalPoint: losserTeamInfo.totalPoint,
+      };
       openModal();
 
       setMatchData(
