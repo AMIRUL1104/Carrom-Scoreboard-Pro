@@ -1,7 +1,6 @@
 import HighlightCard from "./HighlightCards";
 
 function Highlights({ highlights }) {
-  // ডাটা ম্যাপ করার জন্য অ্যারে তৈরি
   const formatTeam = (playerOne, playerTwo) => {
     const p1 = playerOne || "";
     const p2 = playerTwo || "";
@@ -10,6 +9,7 @@ function Highlights({ highlights }) {
     return p1 || p2 || "";
   };
 
+  // ডাটা ম্যাপ করার জন্য অ্যারে তৈরিs
   const highlightData = [
     {
       icon: "🕐",

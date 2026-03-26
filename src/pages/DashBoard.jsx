@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import Header from "../components/Header/Header";
 import Highlights from "../components/Dashboard/Highlights";
-
+import Overview from "../components/Dashboard/Overview";
+import Skeleton from "../components/Dashboard/Skeleton";
 // Replace these with your real data props or API calls
 // ------ Real data -----------
 // ----------------------------
@@ -125,20 +126,20 @@ all_Players_Name.forEach((element) => {
 
 // ─── Mock Data ────────────────────────────────────────────────────────────────
 
-const MOCK_PLAYERS = [
-  { name: "Arif", matches: 24, wins: 18, losses: 6, avgScore: 21.4 },
-  { name: "Sakib", matches: 20, wins: 13, losses: 7, avgScore: 18.9 },
-  { name: "Nadia", matches: 18, wins: 10, losses: 8, avgScore: 17.2 },
-  { name: "Rafi", matches: 15, wins: 7, losses: 8, avgScore: 15.8 },
-  { name: "Mitu", matches: 12, wins: 4, losses: 8, avgScore: 13.1 },
-];
+// const MOCK_PLAYERS = [
+//   { name: "Arif", matches: 24, wins: 18, losses: 6, avgScore: 21.4 },
+//   { name: "Sakib", matches: 20, wins: 13, losses: 7, avgScore: 18.9 },
+//   { name: "Nadia", matches: 18, wins: 10, losses: 8, avgScore: 17.2 },
+//   { name: "Rafi", matches: 15, wins: 7, losses: 8, avgScore: 15.8 },
+//   { name: "Mitu", matches: 12, wins: 4, losses: 8, avgScore: 13.1 },
+// ];
 
-const MOCK_HIGHLIGHTS = {
-  longestMatch: { duration: "18m 42s", players: ["Arif", "Sakib"] },
-  shortestMatch: { duration: "2m 15s", players: ["Rafi", "Mitu"] },
-  highestScoreMatch: { score: 29, players: ["Arif", "Nadia"] },
-  closestMatch: { diff: 1, score: "14 vs 13", players: ["Sakib", "Rafi"] },
-};
+// const MOCK_HIGHLIGHTS = {
+//   longestMatch: { duration: "18m 42s", players: ["Arif", "Sakib"] },
+//   shortestMatch: { duration: "2m 15s", players: ["Rafi", "Mitu"] },
+//   highestScoreMatch: { score: 29, players: ["Arif", "Nadia"] },
+//   closestMatch: { diff: 1, score: "14 vs 13", players: ["Sakib", "Rafi"] },
+// };
 
 const MOCK_CHART_DATA = {
   matchesOverTime: [
@@ -161,105 +162,6 @@ const MOCK_CHART_DATA = {
 
 // ─── Utility ──────────────────────────────────────────────────────────────────
 
-/** Count-up animation hook */
-function useCountUp(target, duration = 1200, active = true) {
-  const [value, setValue] = useState(0);
-  useEffect(() => {
-    if (!active) return;
-    let start = null;
-    const step = (timestamp) => {
-      if (!start) start = timestamp;
-      const progress = Math.min((timestamp - start) / duration, 1);
-      // ease-out cubic
-      const eased = 1 - Math.pow(1 - progress, 3);
-      setValue(Math.floor(eased * target));
-      if (progress < 1) requestAnimationFrame(step);
-    };
-    requestAnimationFrame(step);
-  }, [target, duration, active]);
-  return value;
-}
-
-// ─── Sub-components ───────────────────────────────────────────────────────────
-
-/** Skeleton shimmer block */
-function Skeleton({ className = "" }) {
-  return (
-    <div
-      className={`rounded-xl bg-[#1a2333] relative overflow-hidden ${className}`}
-    >
-      <div className="absolute inset-0 -translate-x-full animate-[shimmer_1.6s_infinite] bg-linear-to-r from-transparent via-[rgba(255,255,255,0.04)] to-transparent" />
-    </div>
-  );
-}
-
-/** Overview stat card */
-function StatCard({ icon, label, value, sub, delay = 0, isLoading }) {
-  const [visible, setVisible] = useState(false);
-  const numericValue = typeof value === "number" ? value : 0;
-  const counted = useCountUp(numericValue, 1200, visible && !isLoading);
-
-  useEffect(() => {
-    const t = setTimeout(() => setVisible(true), delay);
-    return () => clearTimeout(t);
-  }, [delay]);
-
-  if (isLoading) {
-    return (
-      <div className="p-6 bg-[#111722] border border-[#1e2836] rounded-3xl">
-        <Skeleton className="w-10 h-10 mb-4" />
-        <Skeleton className="w-16 h-7 mb-2" />
-        <Skeleton className="w-24 h-4" />
-      </div>
-    );
-  }
-
-  return (
-    <div
-      className="group relative flex flex-col p-6 bg-[#111722] border border-[#1e2836] 
-      rounded-3xl shadow-[0_4px_24px_rgba(0,0,0,0.5),0_1px_0_rgba(255,255,255,0.04)_inset]
-      overflow-hidden cursor-default transition-all duration-200 ease-in-out
-      hover:bg-[#161f2e] hover:border-[#2a3a50] hover:-translate-y-0.5
-      hover:shadow-[0_0_20px_rgba(0,229,160,0.25),0_4px_24px_rgba(0,0,0,0.5)]"
-      style={{
-        opacity: visible ? 1 : 0,
-        transform: visible ? "translateY(0)" : "translateY(12px)",
-        transition: `opacity 0.4s ease ${delay}ms, transform 0.4s ease ${delay}ms, box-shadow 0.2s ease, border-color 0.2s ease`,
-      }}
-    >
-      {/* Top gradient line */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-[rgba(0,229,160,0.4)] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-      {/* Icon */}
-      <div
-        className="w-11 h-11 rounded-xl bg-[rgba(0,229,160,0.1)] border border-[rgba(0,229,160,0.15)]
-        flex items-center justify-center mb-4 text-[#00e5a0] text-lg
-        group-hover:bg-[rgba(0,229,160,0.18)] group-hover:shadow-[0_0_14px_rgba(0,229,160,0.3)]
-        transition-all duration-200"
-      >
-        {icon}
-      </div>
-
-      {/* Value */}
-      <div className="text-[28px] font-extrabold font-[Syne] text-[#e8f0f8] leading-none mb-1 tabular-nums">
-        {typeof value === "number" ? counted : value}
-      </div>
-
-      {/* Label */}
-      <div className="text-[12px] font-medium uppercase tracking-widest text-[#4a5c70] mb-1">
-        {label}
-      </div>
-
-      {/* Sub info */}
-      {sub && (
-        <div className="text-[12px] text-[#00e5a0] font-medium mt-auto pt-2">
-          {sub}
-        </div>
-      )}
-    </div>
-  );
-}
-
 /** Win % progress bar cell */
 function WinBar({ percent }) {
   return (
@@ -276,62 +178,6 @@ function WinBar({ percent }) {
     </div>
   );
 }
-
-/** Highlight card */
-// function HighlightCard({
-//   icon,
-//   label,
-//   main,
-//   sub,
-//   color = "#00e5a0",
-//   delay = 0,
-// }) {
-//   const [visible, setVisible] = useState(false);
-//   useEffect(() => {
-//     const t = setTimeout(() => setVisible(true), delay);
-//     return () => clearTimeout(t);
-//   }, [delay]);
-
-//   return (
-//     <div
-//       className="group relative flex flex-col p-5 bg-[#111722] border border-[#1e2836]
-//       rounded-[20px] overflow-hidden cursor-default
-//       hover:border-[#2a3a50] hover:-translate-y-0.5
-//       transition-all duration-200"
-//       style={{
-//         opacity: visible ? 1 : 0,
-//         transform: visible ? "translateY(0)" : "translateY(12px)",
-//         transition: `opacity 0.4s ease ${delay}ms, transform 0.4s ease ${delay}ms, border-color 0.2s ease`,
-//         boxShadow: "0 4px 24px rgba(0,0,0,0.4)",
-//       }}
-//     >
-//       {/* Bg glow */}
-//       <div
-//         className="absolute -top-8 -right-8 w-24 h-24 rounded-full blur-2xl opacity-[0.12] group-hover:opacity-[0.22] transition-opacity duration-300"
-//         style={{ background: color }}
-//       />
-
-//       <div
-//         className="w-9 h-9 rounded-[10px] flex items-center justify-center text-base mb-3"
-//         style={{
-//           background: `${color}1a`,
-//           border: `1px solid ${color}26`,
-//           color,
-//         }}
-//       >
-//         {icon}
-//       </div>
-
-//       <div className="text-[11px] uppercase tracking-widest text-[#4a5c70] font-medium mb-1">
-//         {label}
-//       </div>
-//       <div className="text-[22px] font-extrabold font-[Syne] text-[#e8f0f8] leading-tight mb-1">
-//         {main}
-//       </div>
-//       <div className="text-[12px] text-[#8a9bb0]">{sub}</div>
-//     </div>
-//   );
-// }
 
 /** Simple inline bar chart */
 function BarChart({ data }) {
@@ -511,7 +357,7 @@ export default function StatsDashboard() {
     shortestMatch: { ...shortestMatch },
     longestMatch: { ...longestMatch },
   };
-  console.log({ closestMatch, bigDiffMatch, shortestMatch, longestMatch });
+  // console.log({ closestMatch, bigDiffMatch, shortestMatch, longestMatch });
 
   // Simulate loading
   useEffect(() => {
@@ -528,12 +374,6 @@ export default function StatsDashboard() {
     ...p,
     winPct: Math.round((p.wins / p.matches) * 100),
   }));
-  // console.log(player_info);
-
-  // const totalMatches = players.reduce((s, p) => s + p.matches, 0) / 2; // each match has 2 players
-  const bestPlayer = [...players].sort((a, b) => b.winPct - a.winPct)[0];
-  const highestScore = Math.max(...players.map((p) => p.avgScore));
-  const highestScorer = players.find((p) => p.avgScore === highestScore);
 
   // Sort table
   const sortedPlayers = [...players].sort((a, b) => {
@@ -644,38 +484,11 @@ export default function StatsDashboard() {
           <EmptyState />
         ) : (
           <>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
-              <StatCard
-                icon="🎯"
-                label="Total Matches"
-                value={Math.round(allData.length)}
-                delay={0}
-                isLoading={isLoading}
-              />
-              <StatCard
-                icon="⏱️"
-                label="Avg Match Time"
-                value="5m 20s"
-                delay={80}
-                isLoading={isLoading}
-              />
-              <StatCard
-                icon="🏆"
-                label="Best Player"
-                value={bestPlayer?.name}
-                sub={`${bestPlayer?.winPct}% Win Rate`}
-                delay={160}
-                isLoading={isLoading}
-              />
-              <StatCard
-                icon="⚡"
-                label="Highest Score"
-                value={MOCK_HIGHLIGHTS.highestScoreMatch.score}
-                sub={`by ${highestScorer?.name}`}
-                delay={240}
-                isLoading={isLoading}
-              />
-            </div>
+            <Overview
+              allData={allData}
+              player_info={player_info}
+              isLoading={isLoading}
+            />
 
             {/* ══════════════════════════════════════════════════════════════
                 SECTION 3 — PLAYER PERFORMANCE TABLE
@@ -819,41 +632,6 @@ export default function StatsDashboard() {
                   Match Highlights
                 </h2>
               </div>
-
-              {/* <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <HighlightCard
-                  icon="🕐"
-                  label="Longest Match"
-                  main={MOCK_HIGHLIGHTS.longestMatch.duration}
-                  sub={MOCK_HIGHLIGHTS.longestMatch.players.join(" vs ")}
-                  color="#00e5a0"
-                  delay={0}
-                />
-                <HighlightCard
-                  icon="⚡"
-                  label="Shortest Match"
-                  main={MOCK_HIGHLIGHTS.shortestMatch.duration}
-                  sub={MOCK_HIGHLIGHTS.shortestMatch.players.join(" vs ")}
-                  color="#3b82f6"
-                  delay={80}
-                />
-                <HighlightCard
-                  icon="🔥"
-                  label="Highest Score"
-                  main={MOCK_HIGHLIGHTS.highestScoreMatch.score}
-                  sub={MOCK_HIGHLIGHTS.highestScoreMatch.players.join(" vs ")}
-                  color="#f59e0b"
-                  delay={160}
-                />
-                <HighlightCard
-                  icon="⚖️"
-                  label="Closest Match"
-                  main={MOCK_HIGHLIGHTS.closestMatch.score}
-                  sub={MOCK_HIGHLIGHTS.closestMatch.players.join(" vs ")}
-                  color="#ec4899"
-                  delay={240}
-                />
-              </div> */}
 
               <Highlights highlights={highlights} />
             </div>
