@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Header from "../components/Header/Header";
 import Highlights from "../components/Dashboard/Highlights/Highlights";
 import Overview from "../components/Dashboard/Overview";
@@ -18,87 +18,6 @@ const stored_LocaleStorage_Data = () => {
     return [];
   }
 };
-
-// const allData = stored_LocaleStorage_Data();
-
-// {
-//     "id": "e57c6a8b-8793-4010-be71-01c992c0af20",
-//     "gameMode": "Single Player",
-//     "gameStart": "2026-03-22T12:06:46.689Z",
-//     "targetScore": 29,
-//     "boardPoint": [
-//         {
-//             "id": "e87c561a-a539-4681-9a0b-3e21bdc74a93",
-//             "teamName": "TeamA",
-//             "playerOne": "amirul",
-//             "value": 8,
-//             "boardNO": 5,
-//             "totalPoint": 29
-//         },
-//         {
-//             "id": "a9357e07-58a6-4bb9-a7f6-a7459275fb83",
-//             "teamName": "TeamA",
-//             "playerOne": "amirul",
-//             "value": 10,
-//             "boardNO": 4,
-//             "totalPoint": 21
-//         },
-//         {
-//             "id": "586618e0-24e9-493e-932d-4b0b283f5879",
-//             "teamName": "TeamA",
-//             "playerOne": "amirul",
-//             "value": 4,
-//             "boardNO": 3,
-//             "totalPoint": 11
-//         },
-//         {
-//             "id": "c8cc5036-d29f-4189-92d2-03d232da00de",
-//             "teamName": "TeamB",
-//             "playerOne": "jomir",
-//             "value": 7,
-//             "boardNO": 2,
-//             "totalPoint": 7
-//         },
-//         {
-//             "id": "878653f5-22d4-439e-a4de-399af66afecf",
-//             "teamName": "TeamA",
-//             "playerOne": "amirul",
-//             "value": 7,
-//             "boardNO": 1,
-//             "totalPoint": 7
-//         }
-//     ],
-//     "countBoard": 5,
-//     "winner": {
-//         "teamName": "TeamA",
-//         "playerOne": "amirul",
-//         "totalPoint": 29
-//     },
-//     "losser": {
-//         "teamName": "TeamB",
-//         "playerOne": "jomir",
-//         "totalPoint": 7
-//     }
-// }
-
-// console.log(player_info);
-
-// ─── Mock Data ────────────────────────────────────────────────────────────────
-
-// const MOCK_PLAYERS = [
-//   { name: "Arif", matches: 24, wins: 18, losses: 6, avgScore: 21.4 },
-//   { name: "Sakib", matches: 20, wins: 13, losses: 7, avgScore: 18.9 },
-//   { name: "Nadia", matches: 18, wins: 10, losses: 8, avgScore: 17.2 },
-//   { name: "Rafi", matches: 15, wins: 7, losses: 8, avgScore: 15.8 },
-//   { name: "Mitu", matches: 12, wins: 4, losses: 8, avgScore: 13.1 },
-// ];
-
-// const MOCK_HIGHLIGHTS = {
-//   longestMatch: { duration: "18m 42s", players: ["Arif", "Sakib"] },
-//   shortestMatch: { duration: "2m 15s", players: ["Rafi", "Mitu"] },
-//   highestScoreMatch: { score: 29, players: ["Arif", "Nadia"] },
-//   closestMatch: { diff: 1, score: "14 vs 13", players: ["Sakib", "Rafi"] },
-// };
 
 const MOCK_CHART_DATA = {
   matchesOverTime: [
@@ -260,8 +179,6 @@ export default function StatsDashboard() {
     // console.log("all-Players-name :", all_Players_Name);
   }
 
-  // console.log("=======================================");
-
   all_Players_Name.forEach((element) => {
     let playMatch = allData.filter((item) => {
       if (
@@ -370,11 +287,75 @@ export default function StatsDashboard() {
     shortestMatch: { ...shortestMatch },
     longestMatch: { ...longestMatch },
   };
-  // console.log({ closestMatch, bigDiffMatch, shortestMatch, longestMatch });
 
-  // Simulate loading
+  const [range, setRange] = useState({
+    start: 0,
+    end: 7,
+  });
+  const [matchesOverTime, setMatchesOverTime] = useState([]);
+  const getLastWeekMatches = (matches, startOffset, endOffset) => {
+    const now = new Date();
+
+    const endDate = new Date();
+    endDate.setDate(now.getDate() - startOffset);
+
+    const startDate = new Date();
+    startDate.setDate(now.getDate() - endOffset);
+
+    // 🔹 Day map init (Mon–Sun)
+    const dayMap = {
+      Mon: 0,
+      Tue: 0,
+      Wed: 0,
+      Thu: 0,
+      Fri: 0,
+      Sat: 0,
+      Sun: 0,
+    };
+
+    const filtered = matches.filter((match) => {
+      const matchDate = new Date(match.gameStart.start);
+
+      if (matchDate >= startDate && matchDate <= endDate) {
+        // 🔥 Day বের করা
+        const day = matchDate.toLocaleDateString("en-US", {
+          weekday: "short",
+        });
+
+        dayMap[day] += 1;
+
+        return true;
+      }
+
+      return false;
+    });
+
+    // 🔹 Transform to array (chart ready)
+    const result = Object.entries(dayMap).map(([label, value]) => ({
+      label,
+      value,
+    }));
+
+    // 🔥 State update
+    setMatchesOverTime(result);
+
+    return filtered;
+  };
+  console.log(matchesOverTime);
+
+  const handleNextWeek = useCallback(() => {
+    setRange((prev) => ({
+      start: prev.start + 7,
+      end: prev.end + 7,
+    }));
+  }, []);
+  useEffect(() => {
+    getLastWeekMatches(allData, range.start, range.end);
+  }, [allData, range]);
+
   useEffect(() => {
     const t = setTimeout(() => setIsLoading(false), 1600);
+
     return () => clearTimeout(t);
   }, []);
 
@@ -436,7 +417,13 @@ export default function StatsDashboard() {
           {/* Title block */}
           <div>
             {/* Pill badge */}
-            <div className="inline-flex items-center gap-1.5 bg-[#00e5a01f] border border-[#00e5a033] rounded-full py-1 px-3 text-[11px] font-medium text-[#00e5a0] mb-4 uppercase tracking-wide">
+            <div
+              onClick={() => {
+                handleNextWeek();
+                console.log(matchesOverTime);
+              }}
+              className="inline-flex items-center gap-1.5 bg-[#00e5a01f] border border-[#00e5a033] rounded-full py-1 px-3 text-[11px] font-medium text-[#00e5a0] mb-4 uppercase tracking-wide"
+            >
               <span className="w-1.5 h-1.5 rounded-full bg-[#00e5a0] animate-pulse" />
               Analytics
             </div>
@@ -693,7 +680,10 @@ export default function StatsDashboard() {
                     </div>
                   ) : (
                     // <BarChart data={MOCK_CHART_DATA.matchesOverTime} />
-                    <Barcharts></Barcharts>
+                    <Barcharts
+                      handleWeekMatches={handleNextWeek}
+                      matchesOverTime={matchesOverTime}
+                    ></Barcharts>
                   )}
                 </div>
 

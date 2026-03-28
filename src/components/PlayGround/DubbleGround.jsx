@@ -64,8 +64,6 @@ function DubbleGround({
     gameStart: getDateAndTime(now),
   });
 
-  console.log(matchHistory);
-
   // ======================
   // 🧩 DERIVED DATA
   // ======================
@@ -87,7 +85,6 @@ function DubbleGround({
       totalPoint: Number(pointCount.TeamB),
     },
   ];
-
   // ======================
   // 🧠 SIDE EFFECTS
   // ======================
