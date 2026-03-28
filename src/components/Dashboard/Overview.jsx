@@ -13,8 +13,6 @@ function Overview({ allData, player_info, isLoading }) {
     (p) => Math.round(p.avgScore) === highestScore,
   );
 
-  console.log(players);
-
   // ডাটা ম্যাপ করার জন্য অ্যারে তৈরিs
   const highlightData = [
     {

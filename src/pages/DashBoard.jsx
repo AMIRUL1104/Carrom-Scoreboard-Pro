@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import Header from "../components/Header/Header";
-import Highlights from "../components/Dashboard/Highlights";
+import Highlights from "../components/Dashboard/Highlights/Highlights";
 import Overview from "../components/Dashboard/Overview";
 import Skeleton from "../components/Dashboard/Skeleton";
+import Barcharts from "../components/Dashboard/charts/Barcharts";
 // Replace these with your real data props or API calls
 // ------ Real data -----------
 // ----------------------------
@@ -18,49 +19,7 @@ const stored_LocaleStorage_Data = () => {
   }
 };
 
-const allData = stored_LocaleStorage_Data();
-
-let all_Players_Name = []; //just player name
-let playersMatch = []; // player name with played matches
-
-for (const element of allData) {
-  // ১. সব প্লেয়ারকে একটি সেট হিসেবে নেওয়া
-  // ২. অপশনাল চেইনিং ব্যবহার করে ডাটা এক্সট্র্যাক্ট করা
-  let playersInMatch = [
-    element.winner?.playerOne,
-    element.winner?.playerTwo,
-    element.loser?.playerOne, // যদি প্রথম লুজার থাকে
-    element.loser?.playerTwo,
-  ];
-
-  // ৩. 'undefined' বা 'null' or duplicate  ভ্যালুগুলো ফিল্টার করে বাদ দেওয়া
-  let validPlayers = playersInMatch.filter(
-    (player) =>
-      player != null && // null এবং undefined একসাথে চেক করে
-      !all_Players_Name.includes(player), // যদি অলরেডি না থাকে তবেই নেবে
-  );
-  // ৪. সঠিক ভেরিয়েবল নামে পুশ করা
-  all_Players_Name.push(...validPlayers);
-}
-
-all_Players_Name.forEach((element) => {
-  let playMatch = allData.filter((item) => {
-    if (
-      item.winner?.playerOne === element ||
-      item.winner?.playerTwo === element ||
-      item.losser?.playerOne === element ||
-      item.losser?.playerTwo === element
-    ) {
-      return item;
-    }
-  });
-
-  // store player name with played matches
-  playersMatch.push({
-    playerName: element,
-    matches: [...playMatch],
-  });
-});
+// const allData = stored_LocaleStorage_Data();
 
 // {
 //     "id": "e57c6a8b-8793-4010-be71-01c992c0af20",
@@ -268,6 +227,60 @@ export default function StatsDashboard() {
   //
 
   // all player details information
+  const [allData] = useState(stored_LocaleStorage_Data());
+
+  let all_Players_Name = []; //just player name
+  let playersMatch = []; // player name with played matches
+
+  for (const element of allData) {
+    // ১. সব প্লেয়ারকে একটি সেট হিসেবে নেওয়া
+    // ২. অপশনাল চেইনিং ব্যবহার করে ডাটা এক্সট্র্যাক্ট করা
+    let playersInMatch = [
+      element.winner?.playerOne,
+      element.winner?.playerTwo,
+      element.losser?.playerOne, // যদি প্রথম লুজার থাকে
+      element.losser?.playerTwo,
+    ];
+
+    // console.log(allData);
+
+    // ৩. 'undefined' বা 'null' or duplicate  ভ্যালুগুলো ফিল্টার করে বাদ দেওয়া
+    let validPlayers = playersInMatch.filter(
+      (player) =>
+        player != null && // null এবং undefined একসাথে চেক করে
+        !all_Players_Name.includes(player), // যদি অলরেডি না থাকে তবেই নেবে
+    );
+    // console.log("players in match :", playersInMatch);
+
+    // console.log("valid players :", validPlayers);
+
+    // ৪. সঠিক ভেরিয়েবল নামে পুশ করা
+    all_Players_Name.push(...validPlayers);
+
+    // console.log("all-Players-name :", all_Players_Name);
+  }
+
+  // console.log("=======================================");
+
+  all_Players_Name.forEach((element) => {
+    let playMatch = allData.filter((item) => {
+      if (
+        item.winner?.playerOne === element ||
+        item.winner?.playerTwo === element ||
+        item.losser?.playerOne === element ||
+        item.losser?.playerTwo === element
+      ) {
+        return item;
+      }
+    });
+
+    // store player name with played matches
+    playersMatch.push({
+      playerName: element,
+      matches: [...playMatch],
+    });
+  });
+
   const [player_info] = useState(() => {
     const playerInfo = playersMatch.map((player) => {
       let notePlayerinfo = {
@@ -679,7 +692,8 @@ export default function StatsDashboard() {
                       ))}
                     </div>
                   ) : (
-                    <BarChart data={MOCK_CHART_DATA.matchesOverTime} />
+                    // <BarChart data={MOCK_CHART_DATA.matchesOverTime} />
+                    <Barcharts></Barcharts>
                   )}
                 </div>
 

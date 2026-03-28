@@ -48,7 +48,10 @@ function MatchCard({ match, openModal, handleDelete }) {
 
             <p className="flex items-center gap-1 whitespace-nowrap">
               <img className="w-3 h-3 opacity-70" src={icon} />
-              <span>{gameStart}</span>
+              {/* <span>{gameStart}</span> */}
+              <span>
+                {gameStart.day} | {gameStart.date} | {gameStart.time}
+              </span>
             </p>
           </div>
 

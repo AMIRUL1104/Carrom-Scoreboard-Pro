@@ -21,8 +21,9 @@ function History() {
   };
   const allMatchRefs = useRef(storedDataa());
   const sortedDataRefs = useRef(storedDataa());
-
+  // gameStart;
   const [allMatch, setAllMatch] = useState(storedDataa());
+  console.log(allMatch);
 
   const handleSortFilter = (e) => {
     const name = e.target.name;
@@ -51,13 +52,13 @@ function History() {
         return setAllMatch(sorted);
       } else if (value.toLowerCase() === "oldest") {
         const sorted = [...all].sort(
-          (a, b) => new Date(a.gameStart) - new Date(b.gameStart),
+          (a, b) => new Date(a.gameStart.start) - new Date(b.gameStart.start),
         );
         sortedDataRefs.current = sorted;
         return setAllMatch(sorted);
       } else {
         const sorted = [...all].sort(
-          (a, b) => new Date(b.gameStart) - new Date(a.gameStart),
+          (a, b) => new Date(b.gameStart.start) - new Date(a.gameStart.start),
         );
         sortedDataRefs.current = sorted;
         return setAllMatch(sorted);

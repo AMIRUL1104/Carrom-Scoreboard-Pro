@@ -15,6 +15,23 @@ function DubbleGround({
   allBoardInfoRef,
 }) {
   // ======================
+  // 📊 date and time  MANAGEMENT
+  // ======================
+  let now = new Date();
+  const getDateAndTime = (start) => {
+    const newLog = {
+      date: now.toLocaleDateString("en-GB"), // 14/04/2026
+      time: now.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      }), // 11:16 PM
+      day: now.toLocaleDateString("en-US", { weekday: "long" }), // Friday
+      start: start,
+    };
+    return newLog;
+  };
+
+  // ======================
   // 📊 BASIC SETUP
   // ======================
   const navigate = useNavigate();
@@ -39,13 +56,15 @@ function DubbleGround({
   const [matchHistory, setMatchHistory] = useState({
     id: crypto.randomUUID(),
     gameMode: SetupData.gameMode,
-    gameStart: SetupData.gameStart,
     targetScore: TargetScore,
     boardPoint: [],
     countBoard: 0,
     winner: {},
     losser: {},
+    gameStart: getDateAndTime(now),
   });
+
+  console.log(matchHistory);
 
   // ======================
   // 🧩 DERIVED DATA
@@ -108,6 +127,7 @@ function DubbleGround({
       countBoard,
       winner,
       losser,
+      gameEnd: getDateAndTime(now),
     }));
   };
 

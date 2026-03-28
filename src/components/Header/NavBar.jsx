@@ -8,45 +8,6 @@ function NavBar() {
 
   return (
     <div className="relative">
-      {/* Navigation Menu
-      <nav
-        className={`
-      ${isOpen ? "flex" : "hidden"} 
-      sm:flex flex-col sm:flex-row 
-      absolute sm:static top-14 right-0 
-      bg-zinc-900 sm:bg-transparent 
-      p-4 sm:p-0 border border-white/5 sm:border-none 
-      rounded-xl sm:rounded-none 
-      items-start sm:items-center 
-      gap-2 sm:gap-2 z-50
-    `}
-      >
-        <Link
-          to="/"
-          className="w-full sm:w-auto px-4 py-2 rounded-lg text-sm sm:text-base text-zinc-400 hover:text-white hover:bg-white/5 transition-all font-medium"
-        >
-          Home
-        </Link>
-
-        <Link
-          to="/history"
-          className="w-full sm:w-auto px-4 py-2 rounded-lg text-sm sm:text-base text-zinc-400 hover:text-white hover:bg-white/5 transition-all font-medium"
-        >
-          History
-        </Link>
-
-        <Link
-          to="/dashboard"
-          className="w-full sm:w-auto px-4 py-2 rounded-lg text-sm sm:text-base text-zinc-400 hover:text-white hover:bg-white/5 transition-all font-medium"
-        >
-          DashBoard
-        </Link>
-
-        <button className="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-white/5 border border-white/10 text-zinc-400 hover:text-white hover:bg-white/10 transition-all">
-          <img src={Setting} alt="Settings" className="w-4 h-4 sm:w-5 sm:h-5" />
-        </button>
-      </nav> */}
-
       <nav
         className={`
     /* Mobile Styles Base */
@@ -107,41 +68,6 @@ function NavBar() {
       </button>
     </div>
   );
-
-  //   return (
-  //     <>
-  //       {/* <nav className="flex items-center gap-1 sm:gap-2 max-sm:hidden">
-  //         <Link
-  //           to="/"
-  //           className="px-3 sm:px-4 py-2 rounded-md sm:rounded-lg text-sm sm:text-base text-zinc-400 hover:text-white hover:bg-white/5 transition-all font-medium"
-  //         >
-  //           Home
-  //         </Link>
-
-  //         <Link
-  //           to="/history"
-  //           className="px-3 sm:px-4 py-2 rounded-md sm:rounded-lg text-sm sm:text-base text-zinc-400 hover:text-white hover:bg-white/5 transition-all font-medium"
-  //         >
-  //           History
-  //         </Link>
-
-  //         <Link
-  //           to="/dashboard"
-  //           className="px-3 sm:px-4 py-2 rounded-md sm:rounded-lg text-sm sm:text-base text-zinc-400 hover:text-white hover:bg-white/5 transition-all font-medium"
-  //         >
-  //           DashBoard
-  //         </Link>
-
-  //         <button className="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-white/5 border border-white/10 text-zinc-400 hover:text-white hover:bg-white/10 transition-all">
-  //           <img src={Setting} alt="Settings" className="w-4 h-4 sm:w-5 sm:h-5" />
-  //         </button>
-  //       </nav>
-  //       <button type="button" className=" hidden max-sm:block">
-  //         <MenuIcon />
-  //       </button> */}
-
-  //     </>
-  //   );
 }
 
 export default NavBar;
