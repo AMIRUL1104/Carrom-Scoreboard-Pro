@@ -1,16 +1,51 @@
-# React + Vite
+# Carrom Scoreboard Pro
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+🔗 Live Demo: https://carrom-scoreboard-pro.netlify.app/  
+📂 GitHub Repo: https://github.com/AMIRUL1104/Carrom-Scoreboard-Pro  
 
-Currently, two official plugins are available:
+## 🚀 Overview
+Carrom Scoreboard Pro is a simple and interactive web-based scoreboard application designed to track carrom game scores in real-time.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ✨ Features
+- Real-time score tracking
+- Player turn management
+- Increment and decrement score system
+- Reset / restart game functionality
+- Clean and user-friendly UI
+- Mobile-first responsive design
 
-## React Compiler
+## 🛠️ Tech Stack
+- JavaScript (Vanilla JS)
+- HTML5
+- CSS3
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🧠 Concepts Used
+- DOM manipulation
+- Event handling
+- Dynamic UI updates
+- Conditional logic
+- State handling without frameworks
 
-## Expanding the ESLint configuration
+## 🎯 Use Case
+This project helps players easily track carrom scores digitally instead of manual counting, ensuring better accuracy and smoother gameplay experience.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 📱 UI Focus
+- Minimal scoreboard interface
+- Fast interaction with buttons
+- Optimized for mobile users
+
+## 🔮 Future Improvements
+- Multiplayer support
+- Match history tracking
+- LocalStorage / database integration
+- Sound effects for interactions
+
+## 📸 Screenshots
+(Add screenshots here)
+
+## 📌 Installation
+
+```bash
+git clone https://github.com/AMIRUL1104/Carrom-Scoreboard-Pro.git
+cd Carrom-Scoreboard-Pro
+open index.html
