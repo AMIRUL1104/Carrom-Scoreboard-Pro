@@ -7,7 +7,7 @@
 Carrom Scoreboard Pro is a simple and interactive web-based scoreboard application designed to track carrom game scores in real-time.
 
 ## ✨ Features
-- Real-time score tracking
+- Real-time score tracking 
 - Player turn management
 - Increment and decrement score system
 - Reset / restart game functionality
@@ -41,7 +41,15 @@ This project helps players easily track carrom scores digitally instead of manua
 - Sound effects for interactions
 
 ## 📸 Screenshots
-(Add screenshots here)
+
+### Home Page
+![Task](./screenshots/home.jpg)
+
+### Dashboard View
+![Dashboard](./screenshots/dashboard.jpg)
+
+### Match History
+![Task](./screenshots/history.jpg)
 
 ## 📌 Installation
 
